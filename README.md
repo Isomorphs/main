@@ -9,7 +9,7 @@
 
 3. try out one aesthetic style 
 
-Task Allocation:
+## Task Allocation:
 
 Maggie:
   Update Movement script. 
