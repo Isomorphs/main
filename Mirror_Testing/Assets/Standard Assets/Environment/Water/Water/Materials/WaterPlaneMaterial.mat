@@ -205,7 +205,7 @@ Material:
       data:
         first:
           name: _RefrColor
-        second: {r: .611764729, g: .921568632, b: .34117648, a: 1}
+        second: {r: 1, g: 1, b: 1, a: 1}
       data:
         first:
           name: WaveSpeed
