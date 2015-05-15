@@ -110,6 +110,13 @@ Material:
           m_Offset: {x: 0, y: 0}
       data:
         first:
+          name: _ShadowTex
+        second:
+          m_Texture: {fileID: 2800000, guid: 1435fa33a992747908977e8ef5f975ed, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
           name: _BumpSpecMap
         second:
           m_Texture: {fileID: 2800000, guid: d5c3456226dc64887a1adaa685ea3efd, type: 3}
@@ -120,13 +127,6 @@ Material:
           name: _TranslucencyMap
         second:
           m_Texture: {fileID: 2800000, guid: bf041efa2d7a544da9befa520c4591e3, type: 3}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _ShadowTex
-        second:
-          m_Texture: {fileID: 2800000, guid: 1435fa33a992747908977e8ef5f975ed, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
     m_Floats:
