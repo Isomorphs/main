@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CharacterMovement : MonoBehaviour {
+public class CharacterMovement : MonoBehaviour
+{
 
 	public float speed = 2.0f;
 	public float jumpSpeed = 10f;
@@ -14,34 +15,40 @@ public class CharacterMovement : MonoBehaviour {
 	private bool grounded = true;
 
 	// Use this for initialization
-	void Awake () {
+	void Awake ()
+	{
 		playerRB = GetComponent<Rigidbody> ();
 	
 	}
-	
 
-	void FixedUpdate () {
+	void Update () {
+		if (Input.GetButtonDown ("Jump") && grounded == true)
+			Jump ();
+	}
+	
+	void FixedUpdate ()
+	{
 		float h = Input.GetAxisRaw ("Horizontal");
 		float v = Input.GetAxisRaw ("Vertical");
 
 		//onCollisionEnter (Collider info);
 
-		Jump ();
 	
-		Move (h,v);
+		Move (h, v);
 	}
 
-	void Move (float h, float v) {
+	void Move (float h, float v)
+	{
 		float rotH = Input.GetAxis ("Mouse X") * mouseSensitivity;
 
 
 		rotV -= Input.GetAxis ("Mouse Y") * mouseSensitivity;
-		rotV = Mathf.Clamp(rotV, -verticalRange, verticalRange);
+		rotV = Mathf.Clamp (rotV, -verticalRange, verticalRange);
 
-		Camera.main.transform.localRotation = Quaternion.Euler(rotV,0,0);
+		Camera.main.transform.localRotation = Quaternion.Euler (rotV, 0, 0);
 
 
-		transform.Rotate(0,rotH,0);
+		transform.Rotate (0, rotH, 0);
 
 		movement.Set (h, 0f, v);
 		movement = transform.rotation * movement.normalized * speed * Time.deltaTime;
@@ -49,21 +56,25 @@ public class CharacterMovement : MonoBehaviour {
 		playerRB.MovePosition (transform.position + movement);
 	}
 
-	void Jump () {
-		if (Input.GetButtonDown ("Jump")) {
-			if (grounded) {
-			GetComponent<Rigidbody>().AddForce(Vector3.up * jumpSpeed);
-			//GetComponent<Rigidbody>().velocity += Vector3.up * j umpSpeed;
-				grounded = false;
-			}
+	void OnCollisionEnter (Collision collision)
+	{
+		if (collision.gameObject.tag == "Floor") {
+			grounded = true;
+			//Destroy(collision.gameObject);
 		}
 
-		else grounded = true;
+	}
+
+	void Jump ()
+	{
+	
+			GetComponent<Rigidbody> ().AddForce (Vector3.up * jumpSpeed);
+			//GetComponent<Rigidbody>().velocity += Vector3.up * j umpSpeed;
+			grounded = false;
+
+
 	}
 	
-	void onCollisionEnter (Collider info) {
-		if (info.tag == "Floor")
-			grounded = true;
-	}
+
 }
 	
