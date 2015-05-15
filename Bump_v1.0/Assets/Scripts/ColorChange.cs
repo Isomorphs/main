@@ -17,9 +17,9 @@ public class ColorChange : MonoBehaviour {
 		colorCurrent = GetComponent<Renderer>().material.color;
 	}
 
-	void OnTriggerEnter (Collider info) {
+	void OnCollisionEnter (Collision collision) {
 
-		if(info.tag == "Player") {
+		if(collision.gameObject.tag == "Player" || collision.gameObject.tag == "PickUp") {
 				this.gameObject.GetComponent<Renderer>().material.color =  Color.black;
 				colorCurrent = Color.black;
 		}
