@@ -3,8 +3,9 @@ using System.Collections;
 
 public class Laser_Rotation : MonoBehaviour {
 
+	/* I wrote this for testing purpose only */
+
 	public float speed = 10.0f;
-	//public float smooth = 1.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -12,9 +13,7 @@ public class Laser_Rotation : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		//float angle = speed;
-		//Quaternion target = Quaternion.Euler(0, 0, angle);
+	void Update () {;
 		transform.RotateAround(transform.position, transform.forward, speed);
 	}
 }
