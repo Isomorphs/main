@@ -6,14 +6,18 @@ public class movement : MonoBehaviour {
 	public float speed = 2.0f;
 	public float mouseSensitivity = 60f;
 	public float verticalRange = 80f;
-	
+	public float armLength;
+//	Vector3 handLocation;
+//	Ray camRay;
 	private Vector3 movementV;
 	private Rigidbody playerRB;
 	private float rotV = 0f;
+	private GameObject hand;
 	
 	// Use this for initialization
 	void Awake () {
 		playerRB = GetComponent<Rigidbody> ();
+		hand = GameObject.FindWithTag("hand");
 		
 	}
 	
@@ -23,7 +27,9 @@ public class movement : MonoBehaviour {
 		float v = Input.GetAxisRaw ("Vertical");
 		
 		Move (h,v);
-		playerRB.AddForce (Vector3.up * Input.GetAxisRaw ("Jump") * 20f);
+//		handLocation = Camera.main.transform.position + Camera.main.transform.forward * 2f;
+		hand.transform.position = Camera.main.transform.position + Camera.main.transform.forward * armLength;
+		//playerRB.AddForce (Vector3.up * Input.GetAxisRaw ("Jump") * 20f);
 
 	}
 	
