@@ -12,12 +12,12 @@ public class movement : MonoBehaviour {
 	private Vector3 movementV;
 	private Rigidbody playerRB;
 	private float rotV = 0f;
-	private GameObject hand;
+//	private GameObject hand;
 	
 	// Use this for initialization
 	void Awake () {
 		playerRB = GetComponent<Rigidbody> ();
-		hand = GameObject.FindWithTag("hand");
+//		hand = GameObject.FindWithTag("hand");
 		
 	}
 	
@@ -28,7 +28,7 @@ public class movement : MonoBehaviour {
 		
 		Move (h,v);
 //		handLocation = Camera.main.transform.position + Camera.main.transform.forward * 2f;
-		hand.transform.position = Camera.main.transform.position + Camera.main.transform.forward * armLength;
+//		hand.transform.position = Camera.main.transform.position + Camera.main.transform.forward * armLength;
 		//playerRB.AddForce (Vector3.up * Input.GetAxisRaw ("Jump") * 20f);
 
 	}
