@@ -22,7 +22,10 @@ public class AddforceTest : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(Input.GetButtonDown("Jump"))
+		{
 			holding = true;
+			itemRB.useGravity = false;
+		}
 	}
 
 	void FixedUpdate(){
@@ -30,7 +33,7 @@ public class AddforceTest : MonoBehaviour {
 			camRot = Camera.main.transform.rotation;
 			forceDir = hand.transform.position - handle.transform.position;
 			itemRB.AddForceAtPosition(forceDir * force, handle.transform.position);
-			itemRB.rotation = camRot;
+			itemRB.MoveRotation(camRot);
 		}
 	}
 }
