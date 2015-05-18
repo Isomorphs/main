@@ -8,7 +8,7 @@ public class AddforceTest : MonoBehaviour {
 	Quaternion camRot;
 	Rigidbody itemRB;
 	bool holding;
-	public Vector3 offset;
+//	public Vector3 offset;
 	Vector3 forceDir;
 	public float force;
 
@@ -16,7 +16,7 @@ public class AddforceTest : MonoBehaviour {
 	void Start () {
 		itemRB = GetComponent<Rigidbody>();
 		hand = GameObject.FindWithTag("hand");
-		handle = GameObject.Find("Handle");
+		handle = GameObject.Find("handle");
 	}
 	
 	// Update is called once per frame
@@ -25,6 +25,7 @@ public class AddforceTest : MonoBehaviour {
 		{
 			holding = true;
 			itemRB.useGravity = false;
+//			itemRB.mass = 0.01f;
 		}
 	}
 
@@ -32,7 +33,7 @@ public class AddforceTest : MonoBehaviour {
 		if (holding){
 			camRot = Camera.main.transform.rotation;
 			forceDir = hand.transform.position - handle.transform.position;
-			itemRB.AddForceAtPosition(forceDir * force, handle.transform.position);
+			itemRB.AddForceAtPosition(forceDir * force, handle.transform.position, ForceMode.Force);
 			itemRB.MoveRotation(camRot);
 		}
 	}
