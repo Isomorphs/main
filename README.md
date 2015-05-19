@@ -20,9 +20,10 @@ Maggie:
   Empty scenes for transition.
   Loading scripts. 
   loading screen.
-  
+  Laser trigger.
+
 Yunzhe:
-  Laser trigger 
+  3D modelling.
   hollow cylindrical space and placement of objects, laser and mirror.
 
   
