@@ -1,4 +1,37 @@
-## Current iteration
+## Current Iteration
+
+1. Hollow cylindrical space
+
+2. placement of objects, laser and mirror.
+
+3. Entry and exit
+empty scenes before and after
+
+4. loading of scenes
+
+5. headlight on and off switch
+
+6. laser trigger mechanism
+
+## Task Allocation:
+
+Maggie:
+  Entry and exit. 
+  Empty scenes for transition.
+  Loading scripts. 
+  loading screen.
+  
+Yunzhe:
+  Laser trigger 
+  hollow cylindrical space and placement of objects, laser and mirror.
+
+  
+Shared:
+  NA
+  
+ 
+ 
+  ### Previous iterations
 
 1. To build a space where character can move through vertically.
 
@@ -9,16 +42,4 @@
 
 3. try out one aesthetic style 
 
-## Task Allocation:
 
-Maggie:
-  Update Movement script. 
-  Write action script.
-  
-Yunzhe:
-  Create mirrors.
-  Create lamp light.
-  
-Shared:
-  Search for color palettes.
-  Implement one color palette.
