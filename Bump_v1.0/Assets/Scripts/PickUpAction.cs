@@ -60,11 +60,11 @@ public class PickUpAction : MonoBehaviour {
 				carriedItem = hit.collider.gameObject;
 				itemRB = carriedItem.GetComponent <Rigidbody> ();
 				//ItemPickingPoint = GameObject.Find("PickingPoint");
-			}
+			
 
 				//Disable item's gravity to make it hover
 				itemRB.useGravity = false;
-
+			}
 				//Disable item's own collider
 //				carriedItem.GetComponent<Collider>().enabled = !carriedItem.GetComponent<Collider>().enabled;
 
