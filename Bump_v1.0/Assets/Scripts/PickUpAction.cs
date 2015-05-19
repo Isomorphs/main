@@ -58,7 +58,7 @@ public class PickUpAction : MonoBehaviour {
 			if (hit.collider.tag == "PickUp" && hit.distance <= maxInteractionDistance){
 				carrying = true;
 				carriedItem = hit.collider.gameObject;
-				itemRB = carriedItem.GetComponent<Rigidbody>();
+				itemRB = carriedItem.GetComponent <Rigidbody> ();
 				//ItemPickingPoint = GameObject.Find("PickingPoint");
 			}
 

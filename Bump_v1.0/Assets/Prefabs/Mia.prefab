@@ -2701,8 +2701,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverDistance: 2
   maxInteractionDistance: 5
-  colliding: 0
-  carrying: 0
 --- !u!124 &12421906
 Behaviour:
   m_ObjectHideFlags: 1

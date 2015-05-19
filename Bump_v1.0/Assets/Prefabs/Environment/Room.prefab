@@ -103,6 +103,7 @@ GameObject:
   - 23: {fileID: 2341900}
   - 114: {fileID: 11476232}
   - 65: {fileID: 6594278}
+  - 114: {fileID: 11462170}
   m_Layer: 0
   m_Name: Wall 1
   m_TagString: Wall
@@ -197,7 +198,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: 616853845a4a54949ac851f2f807aa2a, type: 2}
+  - {fileID: 10754, guid: 0000000000000000e000000000000000, type: 0}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -293,7 +294,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: 616853845a4a54949ac851f2f807aa2a, type: 2}
+  - {fileID: 10754, guid: 0000000000000000e000000000000000, type: 0}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -426,6 +427,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorCurrent: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &11462170
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 194420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f6622855797e4c4db693984ed079ad2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11468452
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -449,7 +461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fd33c71645c34e8d8a80d0e9ab1eb80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colorCurrent: {r: 0, g: 0, b: 0, a: 0}
+  colorCurrent: {r: 1, g: 1, b: 1, a: 0}
 --- !u!114 &11497298
 MonoBehaviour:
   m_ObjectHideFlags: 1
