@@ -9,17 +9,18 @@ public class Laser_Reflection : MonoBehaviour {
 	 * Other opaque surface is labelled by BlockingSurface Mask, a changeable public variable.
 	 * If the layer strikes a surface that is neither opaque nor reflecting, it will pass through unobstructed.*/
 
-	int reflectionMask;
-	Ray laserRay;
-	RaycastHit hit;
-	LineRenderer laser;
+	public RaycastHit hit;
 	public float range = 100f;
 	public int max_reflection_number = 10;
+	public LayerMask BlockingSurface;
+
+	private int reflectionMask;
+	private Ray laserRay;
+	private LineRenderer laser;
 	private float remainingRange;
 	private int reflectionCount;
 	private Vector3 newDir;
 	private Vector3[] ReflectionPts;
-	public LayerMask BlockingSurface;
 
 	void Start () {
 		laser = GetComponent<LineRenderer> ();
