@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CharacterMovement : MonoBehaviour
 {
+	// For jumping to work normally, all "jumpable" objects need to be tagged as "Environment"
 
 	public float speed = 2.0f;
 	public float jumpSpeed = 10f;
@@ -56,13 +57,22 @@ public class CharacterMovement : MonoBehaviour
 		playerRB.MovePosition (transform.position + movement);
 	}
 
-	void OnCollisionEnter (/*Collision collision*/)
+	void OnCollisionStay (Collision collision)
 	{
-		//if (collision.gameObject.tag == "Floor") {
+		if (collision.gameObject.tag == "Environment") {
 			grounded = true;
 			//Destroy(collision.gameObject);
-		//}
+		}
 
+	}
+
+	void OnCollisionExit (Collision collision)
+	{
+		if (collision.gameObject.tag == "Environment") {
+			grounded = false;
+			//Destroy(collision.gameObject);
+		}
+		
 	}
 
 	void Jump ()
