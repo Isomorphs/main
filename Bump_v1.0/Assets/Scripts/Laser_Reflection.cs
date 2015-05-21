@@ -21,6 +21,8 @@ public class Laser_Reflection : MonoBehaviour {
 	private int reflectionCount;
 	private Vector3 newDir;
 	private Vector3[] ReflectionPts;
+	//testing
+	float speed = 9f;
 
 	void Start () {
 		laser = GetComponent<LineRenderer> ();
@@ -58,7 +60,12 @@ public class Laser_Reflection : MonoBehaviour {
 				newDir = Vector3.Reflect(laserRay.direction, hit.normal);
 				laserRay.direction = newDir;
 
-
+				if (hit.collider.tag == "LaserTrigger")
+				{
+					//testing
+					hit.transform.position = hit.transform.position + hit.transform.up * speed * Time.deltaTime;
+					print ("Trigger works!"); // Should be replaced by more level-specific codes in the future
+				}
 
 				reflectionCount++;
 
@@ -66,6 +73,10 @@ public class Laser_Reflection : MonoBehaviour {
 			//stop the laser when it hits an opaque object
 			else if (Physics.Raycast(laserRay, out hit, remainingRange, BlockingSurface)) {
 				ReflectionPts[reflectionCount] = hit.point;
+				if (hit.collider.tag == "LaserTrigger")
+				{
+					print ("Trigger works!"); // Should be replaced by more level-specific codes in the future
+				}
 				break;
 			}
 			else {
