@@ -56,12 +56,12 @@ public class CharacterMovement : MonoBehaviour
 		playerRB.MovePosition (transform.position + movement);
 	}
 
-	void OnCollisionEnter (Collision collision)
+	void OnCollisionEnter (/*Collision collision*/)
 	{
-		if (collision.gameObject.tag == "Floor") {
+		//if (collision.gameObject.tag == "Floor") {
 			grounded = true;
 			//Destroy(collision.gameObject);
-		}
+		//}
 
 	}
 
