@@ -41,6 +41,7 @@ public class PickUpAction : MonoBehaviour {
 			else PickUpObject();
 		}
 
+
 	}
 
 	void FixedUpdate () {
@@ -78,19 +79,15 @@ public class PickUpAction : MonoBehaviour {
 
 	void CarryObject () {
 
-//		forceDir = transform.TransformPoint(holdingLocation) - ItemPickingPoint.transform.position;
-
-//		itemRB.AddForce(forceDir.normalized * carryingForce);
-
-
 		//if (colliding == false) {
 			//Sync item's position according to camera
 			//itemPosition.Set (0f, 1f, 0f);
-			itemPosition = mainCamera.transform.position + mainCamera.transform.forward * (hoverDistance + Time.deltaTime);
-			itemRB.MovePosition (itemPosition);
+			//itemPosition = mainCamera.transform.position + mainCamera.transform.forward * (hoverDistance + Time.deltaTime);
+		carriedItem.transform.rotation = this.transform.rotation;
+		itemRB.MovePosition (Vector3.Lerp(carriedItem.transform.position, mainCamera.transform.position + mainCamera.transform.forward * hoverDistance, 20 * Time.deltaTime));
 		//}
 		//Sync item's rotation according to player
-		carriedItem.transform.rotation = this.transform.rotation;
+
 	}
 
 	void DropObject () {
