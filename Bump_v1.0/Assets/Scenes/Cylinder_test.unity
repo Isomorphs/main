@@ -100,7 +100,7 @@ GameObject:
   - 23: {fileID: 431267280}
   m_Layer: 0
   m_Name: Cube 1
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -244,7 +244,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11456334, guid: 500d53c390b0745b6910407eece2b20c, type: 2}
       propertyPath: jumpSpeed
-      value: 1000
+      value: 750
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 500d53c390b0745b6910407eece2b20c, type: 2}
@@ -303,7 +303,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: 73d892d6471c64c64b94cfe2dfff3810, type: 2}
+  - {fileID: 2100000, guid: 84b9e1d19d11078d11005b9844295342, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -385,7 +385,7 @@ GameObject:
   - 65: {fileID: 1223254047}
   m_Layer: 0
   m_Name: Plane
-  m_TagString: Floor
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -533,7 +533,7 @@ GameObject:
   - 23: {fileID: 1404053548}
   m_Layer: 0
   m_Name: Cube 6
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -609,7 +609,7 @@ GameObject:
   - 23: {fileID: 1418612370}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -685,7 +685,7 @@ GameObject:
   - 23: {fileID: 1615509749}
   m_Layer: 0
   m_Name: Cube 3
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -761,7 +761,7 @@ GameObject:
   - 23: {fileID: 1676889757}
   m_Layer: 0
   m_Name: Cube 4
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -837,7 +837,7 @@ GameObject:
   - 23: {fileID: 1824226854}
   m_Layer: 0
   m_Name: Cube 5
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -913,7 +913,7 @@ GameObject:
   - 23: {fileID: 1867594265}
   m_Layer: 0
   m_Name: Cube 2
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -1018,7 +1018,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: 73d892d6471c64c64b94cfe2dfff3810, type: 2}
+  - {fileID: 2100000, guid: 84b9e1d19d11078d11005b9844295342, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
