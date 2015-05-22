@@ -1,10 +1,23 @@
-| No. | Activity                         | Date   | Yunzhe (Duration in hours) | Maggie (Duration in hours) |
-|-----|----------------------------------|--------|----------------------------|----------------------------|
-| 1   | Liftoff Day 1                    | 11-May | 8                          | 8                          |
-| 2   | Liftoff Day 2                    | 12-May | 8                          | 8                          |
-| 3   | Brainstorming and planning       | 12-May | 3                          | 3                          |
-| 4   | Learning Unity Engine            | 13-May | 8                          | 8                          |
-| 5   |                                  | 14-May | 7                          | 7                          |
-| 6   | Learning C#                      | 15-May | 8                          | 8                          |
-| 7   | FPS movement and camera script   | 16-May | 5                          | 5                          |
-| 8   | Color Change on Collision script | 16-May |                            | 4                          |
+| No. | Activity                                          | Date   | Yunzhe (Duration in hours) | Maggie (Duration in hours) |
+|-----|---------------------------------------------------|--------|----------------------------|----------------------------|
+| 1   | Liftoff Day 1                                     | 11-May | 8                          | 8                          |
+| 2   | Liftoff Day 2                                     | 12-May | 8                          | 8                          |
+| 3   | Brainstorming and planning of project idea        | 12-May | 3                          | 3                          |
+| 4   | Learning Unity Engine                             | 13-May | 8                          | 8                          |
+| 5   |                                                   | 14-May | 7                          | 7                          |
+| 6   | Learning C#                                       | 15-May | 8                          | 8                          |
+| 7   | FPS movement and camera script                    | 16-May | 5                          | 5                          |
+| 8   | Color Change on Collision script                  | 16-May |                            | 4                          |
+| 9   | Reflection and laser script                       | 18-May | 6                          |                            |
+| 10  | Object pick-up script                             | 18-May |                            | 8                          |
+| 11  |                                                   | 19-May | 4                          |                            |
+| 12  | Discussing color scheme and aesthetic style       | 19-May | 2                          | 2                          |
+| 13  | Testing skyboxes                                  | 19-May | 3                          | 1                          |
+| 14  | brainstorming for level design                    | 20-May | 3                          | 3                          |
+| 15  | Writing level loading script and transition scene | 20-May |                            | 5                          |
+| 16  | Learning and making 3D models for first level     | 20-May | 5                          |                            |
+| 17  |                                                   | 21-May | 8                          |                            |
+| 18  | Writing primitive  trigger script for laser       | 21-May |                            | 1                          |
+| 19  | Refined jumping script                            | 21-May |                            | 1                          |
+| 20  | Reading Art of Game Design: a Book of Lenses      | 21-May |                            | 5                          |
+| 21  | Improve on object pick-up script                  | 21-May |                            | 2                          |
