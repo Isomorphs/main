@@ -11,8 +11,7 @@ public class Fading : MonoBehaviour {
 	private float alpha = 1f;			//The texture's alpha value
 	private int fadeDir = -1;			//Fading direction of texture (in = -1; out = 1)
 
-
-	void OnGUI () {
+	private void OnGUI () {
 		alpha += fadeDir * fadeSpeed * Time.deltaTime;
 		alpha = Mathf.Clamp01 (alpha);	//Clamp alpha to be within 0-1.
 
@@ -23,12 +22,14 @@ public class Fading : MonoBehaviour {
 	}
 
 	public float BeginFading (int direction) {
+		//print ("Begin fading");
 		fadeDir = direction;
 		return (fadeSpeed);				//Return fadeSpeed to time the loadLevel function.
 	
 	}
 
-	void OnLevelWasLoaded () {
+	private void OnLevelWasLoaded () {
+		//print ("level loaded");
 		alpha = 1;
 		BeginFading (-1);				//Begin fading when the next level is loaded.
 	}

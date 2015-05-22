@@ -75,7 +75,7 @@ public class PickUpAction : MonoBehaviour {
 	void DropObject () {
 		carrying = false;
 		carriedItem.AddComponent <Rigidbody> (); 	// Add back rigidbody for future use
-		carriedItem.transform.parent = null;		// Remove item from player
+		carriedItem.transform.parent = GameObject.Find("Items").transform;		// Remove item from player
 		carriedItem = null;
 
 	}
