@@ -252,7 +252,12 @@ Prefab:
       propertyPath: m_TagString
       value: Environment
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 6507256, guid: 660af83544f014970bed2ce55a1dfe8f, type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6507256, guid: 660af83544f014970bed2ce55a1dfe8f, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 660af83544f014970bed2ce55a1dfe8f, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &826099607
@@ -864,7 +869,7 @@ GameObject:
   - 114: {fileID: 2015847867}
   m_Layer: 0
   m_Name: Laser_Source
-  m_TagString: PickUp
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

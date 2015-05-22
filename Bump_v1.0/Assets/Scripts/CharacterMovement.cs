@@ -31,9 +31,6 @@ public class CharacterMovement : MonoBehaviour
 	{
 		float h = Input.GetAxisRaw ("Horizontal");
 		float v = Input.GetAxisRaw ("Vertical");
-
-		//onCollisionEnter (Collider info);
-
 	
 		Move (h, v);
 	}
@@ -78,8 +75,7 @@ public class CharacterMovement : MonoBehaviour
 	void Jump ()
 	{
 	
-			GetComponent<Rigidbody> ().AddForce (Vector3.up * jumpSpeed);
-			//GetComponent<Rigidbody>().velocity += Vector3.up * j umpSpeed;
+			playerRB.AddForce (Vector3.up * jumpSpeed);
 			grounded = false;
 
 
