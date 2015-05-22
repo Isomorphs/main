@@ -22,7 +22,7 @@ public class Laser_Reflection : MonoBehaviour {
 	private Vector3 newDir;
 	private Vector3[] ReflectionPts;
 	//testing
-	float speed = 9f;
+	//float speed = 9f;
 
 	void Start () {
 		laser = GetComponent<LineRenderer> ();
