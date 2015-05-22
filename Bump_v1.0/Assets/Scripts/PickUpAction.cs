@@ -4,32 +4,21 @@ using System.Collections;
 public class PickUpAction : MonoBehaviour {
 	public float hoverDistance = 2f;			//item will hover in front of player by this var
 	public float maxInteractionDistance = 5f;	//max distance allowed for picking up objects
-	//public bool colliding = false;				//for item's movement correction
-	//public float carryingForce = 1f;
 
 	private bool carrying = false;
 	private GameObject mainCamera;
 	private GameObject carriedItem;
-	//private GameObject hand;
 	private Vector3 center;
 	private float x = Screen.width /2;
 	private float y = Screen.height /2;
 	private Rigidbody itemRB;
-	private BoxCollider newCollider;
-	private Vector3 colliderHeight;
-	private Vector3 itemPosition;
-	//private GameObject ItemPickingPoint;
-	//private Vector3 locationOfForce;
-	//private Vector3 holdingLocation;
-	//private Vector3 forceDir;
+
+
 
 	// Use this for initialization
 	void Start () {
-		//Determine middle of screen using (x,y)
 		mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-		//hand = GameObject.Find("Hand");
 		center.Set(x,y,0);
-		//holdingLocation = hand.transform.position;
 	}
 	
 	// Update is called once per frame
@@ -40,6 +29,7 @@ public class PickUpAction : MonoBehaviour {
 			if (carrying) DropObject();
 			else PickUpObject();
 		}
+
 
 	}
 
@@ -59,46 +49,35 @@ public class PickUpAction : MonoBehaviour {
 				carrying = true;
 				carriedItem = hit.collider.gameObject;
 				itemRB = carriedItem.GetComponent <Rigidbody> ();
-				//ItemPickingPoint = GameObject.Find("PickingPoint");
 			
-
 				//Disable item's gravity to make it hover
 				itemRB.useGravity = false;
-			}
-				//Disable item's own collider
-//				carriedItem.GetComponent<Collider>().enabled = !carriedItem.GetComponent<Collider>().enabled;
 
-				//Add new collider to player according to item.
-//				colliderHeight.Set(0f, 1f, hoverDistance);
-//				newCollider = this.gameObject.AddComponent <BoxCollider> ();
-//				this.gameObject.GetComponent<BoxCollider> ().center =  colliderHeight;
-//				this.gameObject.GetComponent<BoxCollider> ().size = carriedItem.GetComponent<BoxCollider> ().size;
+				//Set's initial rotation to be same as player
+				carriedItem.transform.rotation = this.transform.rotation;
+
+				//Make carried item a child of player
+				carriedItem.transform.parent = this.transform;
+
+				//Destroy item's Rigidbody to correct item's movement
+				Destroy (itemRB);
+			}
+
 		}
 	}
 
 	void CarryObject () {
 
-//		forceDir = transform.TransformPoint(holdingLocation) - ItemPickingPoint.transform.position;
-
-//		itemRB.AddForce(forceDir.normalized * carryingForce);
-
-
-		//if (colliding == false) {
-			//Sync item's position according to camera
-			//itemPosition.Set (0f, 1f, 0f);
-			itemPosition = mainCamera.transform.position + mainCamera.transform.forward * (hoverDistance + Time.deltaTime);
-			itemRB.MovePosition (itemPosition);
-		//}
-		//Sync item's rotation according to player
-		carriedItem.transform.rotation = this.transform.rotation;
+		//Change position of the carried item accordingly
+		carriedItem.transform.position = mainCamera.transform.position + mainCamera.transform.forward * hoverDistance;
 	}
 
 	void DropObject () {
 		carrying = false;
-		itemRB.useGravity = true;
-//		Destroy (this.GetComponent<BoxCollider> () );
-//		carriedItem.GetComponent<Collider>().enabled = !carriedItem.GetComponent<Collider>().enabled;
+		carriedItem.AddComponent <Rigidbody> (); 	// Add back rigidbody for future use
+		carriedItem.transform.parent = null;		// Remove item from player
 		carriedItem = null;
+
 	}
 	
 }
