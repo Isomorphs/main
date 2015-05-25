@@ -39,8 +39,8 @@ public class deathHandling : MonoBehaviour {
 			//stop her rolling around.
 			playerRB.freezeRotation = true;
 
-			controller.GetComponent<ChangeLevelTemp>().ReloadLevel();
-			controller.GetComponent<Fading>().BeginFading(1);
+			//controller.GetComponent<ChangeLevelTemp>().ReloadLevel();
+			//controller.GetComponent<Fading>().BeginFading(1);
 		}
 	}
 
