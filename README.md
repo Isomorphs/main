@@ -1,6 +1,43 @@
 ## Current Iteration
+**To design a playable level with transitions, pick-up object, laser, mirror, colour change and doppler effect.**
 
-1. Hollow cylindrical space
+1. Player spawn points (checkpoints). 
+	- Player death script
+		- Fall from height
+		- reload current level 
+
+2. Implement aesthetic style
+	- outline shader
+	- color scheme
+
+3. Design level
+	- 3D models
+	- Placement of elements
+
+4. Skybox
+	- Toony skybox
+
+
+
+## Task Allocation:
+
+Maggie:
+  - Implement aesthetic style
+  - Skybox
+
+Yunzhe:
+  Player spawn points
+  
+
+  
+Shared:
+  Design level
+  
+ 
+ 
+  ### Previous iterations
+  
+  1. Hollow cylindrical space
 
 2. placement of objects, laser and mirror.
 
@@ -13,26 +50,7 @@ empty scenes before and after
 
 6. laser trigger mechanism
 
-## Task Allocation:
-
-Maggie:
-  Entry and exit. 
-  Empty scenes for transition.
-  Loading scripts. 
-  loading screen.
-  Laser trigger.
-
-Yunzhe:
-  3D modelling.
-  hollow cylindrical space and placement of objects, laser and mirror.
-
-  
-Shared:
-  NA
-  
- 
- 
-  ### Previous iterations
+_________________________________________
 
 1. To build a space where character can move through vertically.
 
