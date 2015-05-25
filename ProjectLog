@@ -12,7 +12,7 @@
 | 10  | Object pick-up script                             | 18-May |                            | 8                          |
 | 11  |                                                   | 19-May | 4                          |                            |
 | 12  | Discussing color scheme and aesthetic style       | 19-May | 2                          | 2                          |
-| 13  | Testing skyboxes                                  | 19-May | 3                          | 1                          |
+| 13  | Learning to use Skyboxes                          | 19-May | 3                          | 1                          |
 | 14  | brainstorming for level design                    | 20-May | 3                          | 3                          |
 | 15  | Writing level loading script and transition scene | 20-May |                            | 5                          |
 | 16  | Learning and making 3D models for first level     | 20-May | 5                          |                            |
@@ -21,3 +21,12 @@
 | 19  | Refined jumping script                            | 21-May |                            | 1                          |
 | 20  | Reading Art of Game Design: a Book of Lenses      | 21-May |                            | 5                          |
 | 21  | Improve on object pick-up script                  | 21-May |                            | 2                          |
+| 22  | Making test level                                 | 22-May | 5                          | 3                          |
+| 23  | Documentation of project                          | 22-May | 2                          | 1                          |
+| 24  | Update Laser Scripts                              | 22-May |                            | 0.5                        |
+| 25  | Experimenting with shaders                        | 22-May |                            | 2                          |
+| 26  | Player Death Script                               | 25-May | 3                          |                            |
+| 27  | Updating transition script                        | 25-May | 4                          |                            |
+| 28  | Experimenting with Skybox                         | 25-May |                            | 3                          |
+| 29  | Outline shader and antialiasing                   | 25-May |                            | 3                          |
+| 30  | Trying out colour schemes                         | 25-May |                            | 1                          |
