@@ -22,6 +22,7 @@ public class deathHandling : MonoBehaviour {
 
 	Rigidbody playerRB;
 	GameObject controller;
+	bool loadingScene = false;
 
 	void Start () {
 		playerRB = GetComponent<Rigidbody>();
@@ -29,19 +30,27 @@ public class deathHandling : MonoBehaviour {
 	}
 
 	void Update () {
-		if (isDead){
+		if (isDead && !loadingScene){
 			timeElapsed += Time.deltaTime;
 //			print ("incremented");
 		}
 
-		if (timeElapsed > delay){
+		if (timeElapsed > delay && !loadingScene){
 
 			//stop her rolling around.
 			playerRB.freezeRotation = true;
 
-			//controller.GetComponent<ChangeLevelTemp>().ReloadLevel();
+			//controller.GetComponent<ChangeLevelTemp>().StartLoading();
+			Application.LoadLevel(Application.loadedLevel + 1);
+			print ("function called");
+			loadingScene = true;
 			//controller.GetComponent<Fading>().BeginFading(1);
 		}
+//		if (Input.anyKeyDown)
+//		{
+//			controller.GetComponent<ChangeLevelTemp>().ActivateScene();
+//		}
+
 	}
 
 //	IEnumerator reloadCurrentLevel() {
