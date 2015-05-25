@@ -4,7 +4,7 @@
 1. Player spawn points (checkpoints). 
 - Player death script
 	- Fall from height
-	- reload current level
+	- reload current level 
 
 2. Implement aesthetic style
 - outline shader
