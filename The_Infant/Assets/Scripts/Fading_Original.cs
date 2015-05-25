@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Fading : MonoBehaviour {
+public class Fading_Original : MonoBehaviour {
 	//Remember to add the scenes used into Build settings for this script to work.
 
 	public Texture2D fadeOutTexture;
