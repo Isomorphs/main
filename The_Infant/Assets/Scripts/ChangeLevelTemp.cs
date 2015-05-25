@@ -2,8 +2,21 @@
 using System.Collections;
 
 public class ChangeLevelTemp : MonoBehaviour {
-	private float fadeTime;
+	bool changingLevel = false;
 
+	void Update () {
+		if (changingLevel)
+		{
+			Application.LoadLevel(Application.loadedLevel);
+			changingLevel = false;
+		}
+	}
+
+	public void ReloadLevel () {
+		changingLevel = true;
+	}
+}
+/*
 	private IEnumerator OnCollisionEnter (Collision collision) {
 		if (collision.collider.tag == "Player") {
 
@@ -13,4 +26,4 @@ public class ChangeLevelTemp : MonoBehaviour {
 			Application.LoadLevel (Application.loadedLevel + 1);
 		}
 	}
-}
+	*/
