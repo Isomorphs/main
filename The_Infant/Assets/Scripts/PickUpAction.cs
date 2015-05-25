@@ -4,6 +4,7 @@ using System.Collections;
 public class PickUpAction : MonoBehaviour {
 	public float hoverDistance = 2f;			//item will hover in front of player by this var
 	public float maxInteractionDistance = 5f;	//max distance allowed for picking up objects
+	public float smoothing = 10f;
 
 	private bool carrying = false;
 	private GameObject mainCamera;
@@ -69,7 +70,7 @@ public class PickUpAction : MonoBehaviour {
 	void CarryObject () {
 
 		//Change position of the carried item accordingly
-		carriedItem.transform.position = mainCamera.transform.position + mainCamera.transform.forward * hoverDistance;
+		carriedItem.transform.position = Vector3.Lerp(carriedItem.transform.position, mainCamera.transform.position + mainCamera.transform.forward * hoverDistance, Time.deltaTime * smoothing);
 	}
 
 	void DropObject () {
