@@ -2,28 +2,28 @@
 **To design a playable level with transitions, pick-up object, laser, mirror, colour change and doppler effect.**
 
 1. Player spawn points (checkpoints). 
-- Player death script
-	- Fall from height
-	- reload current level 
+	- Player death script
+		- Fall from height
+		- reload current level 
 
 2. Implement aesthetic style
-- outline shader
-- color scheme
+	- outline shader
+	- color scheme
 
 3. Design level
-- 3D models
-- Placement of elements
+	- 3D models
+	- Placement of elements
 
 4. Skybox
-- Toony skybox
+	- Toony skybox
 
 
 
 ## Task Allocation:
 
 Maggie:
-  Implement aesthetic style
-  Skybox
+  - Implement aesthetic style
+  - Skybox
 
 Yunzhe:
   Player spawn points
