@@ -11,14 +11,14 @@ public class Fading : MonoBehaviour {
 	private float alpha = 0f;			//The texture's alpha value
 	private int fadeDir = 0;			//Fading direction of texture (in = -1; out = 1)
 
-	public bool fadingComplete {
-		get {
-			return fadingComplete;
-		}
-		set {
-			fadingComplete = value;
-		}
-	}
+//	public bool fadingComplete {
+//		get {
+//			return fadingComplete;
+//		}
+//		set {
+//			fadingComplete = value;
+//		}
+//	}
 
 	void OnGUI () {
 		if (fadeDir == 0)
@@ -30,7 +30,7 @@ public class Fading : MonoBehaviour {
 		print("alpha: " + alpha.ToString());
 
 		if ((fadeDir == 1 && alpha == fadeDir) || (alpha == 0 && fadeDir == -1)) {
-			fadingComplete = true;
+//			fadingComplete = true;
 			fadeDir = 0;
 		}
 		
@@ -40,12 +40,12 @@ public class Fading : MonoBehaviour {
 
 	}
 
-	public void BeginFading (int direction) {
+	public float BeginFading (int direction) {
 		print ("Begin fading");
 		fadeDir = direction;
-		fadingComplete = false;
+//		fadingComplete = false;
 
-		//return fadeSpeed;				//Return fadeSpeed to time the loadLevel function.
+		return fadeSpeed;				//Return fadeSpeed to time the loadLevel function.
 	}
 
 //	public float BeginFading (int direction) {

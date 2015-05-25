@@ -23,29 +23,48 @@ public class deathHandling : MonoBehaviour {
 	Rigidbody playerRB;
 	GameObject controller;
 	bool loadingScene = false;
+	Vector3 initialPosition;
+	Quaternion initialRotation;
+	//bool* fadingIn, fadingOut;
 
 	void Start () {
 		playerRB = GetComponent<Rigidbody>();
 		controller = GameObject.Find("GameController");
+		initialPosition = playerRB.transform.position;
+		initialRotation = playerRB.transform.rotation;
+		//fadingOut = &(controller.GetComponent<FadingTransition>().sceneEnding);
+		//fadingIn = &(controller.GetComponent<FadingTransition>().sceneStarting);
 	}
 
 	void Update () {
-		if (isDead && !loadingScene){
+		if (isDead){
 			timeElapsed += Time.deltaTime;
 //			print ("incremented");
 		}
 
-		if (timeElapsed > delay && !loadingScene){
+		if (timeElapsed > delay){
+			//*fadingOut = true;
 
+
+		//	if (Input.anyKeyDown && !(*fadingOut))
+		//	{
+				isDead = false;
+				timeElapsed = 0f;
+				playerRB.MovePosition(initialPosition);
+				playerRB.rotation = initialRotation;
+				print ("resurrected!");
+				controller.GetComponent<FadingTransition>().sceneStarting = true;
+			//}
 			//stop her rolling around.
-			playerRB.freezeRotation = true;
+			//playerRB.freezeRotation = true;
 
-			//controller.GetComponent<ChangeLevelTemp>().StartLoading();
-			Application.LoadLevel(Application.loadedLevel + 1);
-			print ("function called");
-			loadingScene = true;
 			//controller.GetComponent<Fading>().BeginFading(1);
 		}
+
+
+
+		
+
 //		if (Input.anyKeyDown)
 //		{
 //			controller.GetComponent<ChangeLevelTemp>().ActivateScene();
