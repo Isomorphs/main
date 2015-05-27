@@ -4,6 +4,11 @@ using System.Collections;
 public class PickUpAction : MonoBehaviour {
 	public float hoverDistance = 2f;			//item will hover in front of player by this var
 	public float maxInteractionDistance = 5f;	//max distance allowed for picking up objects
+	public float upOffset = 0f;					//change the way the object is held
+	public float rightOffset = 0f;
+	public float throwingForce = 100f;
+	public float turningSpeed = 5f;
+	public bool AddRandomTorque = true;
 	public float smoothing = 10f;
 
 	private bool carrying = false;
@@ -13,9 +18,7 @@ public class PickUpAction : MonoBehaviour {
 	private float x = Screen.width /2;
 	private float y = Screen.height /2;
 	private Rigidbody itemRB;
-
-
-
+	
 	// Use this for initialization
 	void Start () {
 		mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -24,19 +27,37 @@ public class PickUpAction : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
-
 		if(Input.GetKeyDown(KeyCode.E)) {
-			if (carrying) DropObject();
+			if (carrying) {
+				DropObject();
+				carriedItem = null;
+			}
 			else PickUpObject();
 		}
 
+		if(Input.GetKeyDown(KeyCode.Q)) {
+			if (carrying) {
+				DropObject();
+				ThrowObject();
 
+			}
+		}
 	}
 
 	void FixedUpdate () {
 
 		if(carrying) CarryObject();
+	}
+
+	void ThrowObject () {
+
+		itemRB = carriedItem.GetComponent<Rigidbody>();
+		//throw!
+		itemRB.AddForce(mainCamera.transform.forward * throwingForce);
+
+		//add a random rotation of the item being thrown away.
+		if (AddRandomTorque)
+			itemRB.AddRelativeTorque(Random.onUnitSphere * turningSpeed);
 	}
 
 	void PickUpObject () {
@@ -46,7 +67,8 @@ public class PickUpAction : MonoBehaviour {
 
 		if(Physics.Raycast (ray, out hit))  {
 
-			if (hit.collider.tag == "PickUp" && hit.distance <= maxInteractionDistance){
+			if ((hit.collider.tag == "PickUp" || hit.collider.tag == "Laser")
+			    && hit.distance <= maxInteractionDistance){
 				carrying = true;
 				carriedItem = hit.collider.gameObject;
 				itemRB = carriedItem.GetComponent <Rigidbody> ();
@@ -62,6 +84,10 @@ public class PickUpAction : MonoBehaviour {
 
 				//Destroy item's Rigidbody to correct item's movement
 				Destroy (itemRB);
+
+				if (hit.collider.tag == "Laser") {
+					upOffset = -1f; rightOffset = 1f;
+				}
 			}
 
 		}
@@ -70,15 +96,19 @@ public class PickUpAction : MonoBehaviour {
 	void CarryObject () {
 
 		//Change position of the carried item accordingly
-		carriedItem.transform.position = Vector3.Lerp(carriedItem.transform.position, mainCamera.transform.position + mainCamera.transform.forward * hoverDistance, Time.deltaTime * smoothing);
+		carriedItem.transform.position = Vector3.Lerp (carriedItem.transform.position, mainCamera.transform.position + mainCamera.transform.forward * hoverDistance
+			+ mainCamera.transform.right * rightOffset + mainCamera.transform.up * upOffset, Time.deltaTime * smoothing);
+
+		//correct rotation of the carried item (mostly for laser pointers)
+		if(carriedItem.tag == "Laser") {
+			carriedItem.transform.rotation = Quaternion.LookRotation(mainCamera.transform.right, mainCamera.transform.forward);
+		}
 	}
 
 	void DropObject () {
 		carrying = false;
 		carriedItem.AddComponent <Rigidbody> (); 	// Add back rigidbody for future use
 		carriedItem.transform.parent = GameObject.Find("Items").transform;		// Remove item from player
-		carriedItem = null;
-
 	}
 	
 }
