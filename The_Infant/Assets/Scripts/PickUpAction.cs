@@ -10,6 +10,7 @@ public class PickUpAction : MonoBehaviour {
 	public float turningSpeed = 5f;
 	public bool AddRandomTorque = true;
 	public float smoothing = 10f;
+	public float newJumpSpeed = 20000f;
 
 	private bool carrying = false;
 	private GameObject mainCamera;
@@ -18,11 +19,18 @@ public class PickUpAction : MonoBehaviour {
 	private float x = Screen.width /2;
 	private float y = Screen.height /2;
 	private Rigidbody itemRB;
+	private float itemMass;
+	private float playerMass;
+	private float initialJumpSpeed;
+	private CharacterMovement movementScript;
 	
 	// Use this for initialization
 	void Start () {
 		mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
 		center.Set(x,y,0);
+		playerMass = this.GetComponent <Rigidbody> ().mass;
+		movementScript = GetComponent<CharacterMovement> ();
+		initialJumpSpeed = movementScript.jumpSpeed;
 	}
 	
 	// Update is called once per frame
@@ -72,6 +80,13 @@ public class PickUpAction : MonoBehaviour {
 				carrying = true;
 				carriedItem = hit.collider.gameObject;
 				itemRB = carriedItem.GetComponent <Rigidbody> ();
+
+				itemMass = itemRB.mass;
+
+				// Update player's mass
+				this.GetComponent <Rigidbody> ().mass = playerMass + itemMass;
+
+				movementScript.jumpSpeed = newJumpSpeed;
 			
 				//Disable item's gravity to make it hover
 				itemRB.useGravity = false;
@@ -108,7 +123,11 @@ public class PickUpAction : MonoBehaviour {
 	void DropObject () {
 		carrying = false;
 		carriedItem.AddComponent <Rigidbody> (); 	// Add back rigidbody for future use
+		carriedItem.GetComponent <Rigidbody> ().mass = itemMass;
+		upOffset = rightOffset = 0f;
 		carriedItem.transform.parent = GameObject.Find("Items").transform;		// Remove item from player
+		this.GetComponent<Rigidbody> ().mass = playerMass;
+		movementScript.jumpSpeed = initialJumpSpeed;
 	}
 	
 }
