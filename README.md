@@ -3,7 +3,7 @@
 ## NEXT LOOP
 
 1. Opening screen
-- Start game ta
+- Start new game tab
 - load game take
 - Manual tab
 - Credits tab
@@ -24,16 +24,20 @@
 ## Task Allocation:
 
 Maggie:
-  - Implement aesthetic style
-  - Skybox
+  - Pause, 
+  - Level persistence
+  - Save, 
+  - Load, 
+  - and exit game.
 
 Yunzhe:
-  Player spawn points
+ - GUI
+ - Starting panel
+ - ESC panel
   
 
-  
 Shared:
-  Design level
+  Story
   
  
  
