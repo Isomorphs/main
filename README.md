@@ -1,21 +1,23 @@
 ## Current Iteration
-**To design a playable level with transitions, pick-up object, laser, mirror, colour change and doppler effect.**
 
-1. Player spawn points (checkpoints). 
-	- Player death script
-		- Fall from height
-		- reload current level 
+## NEXT LOOP
 
-2. Implement aesthetic style
-	- outline shader
-	- color scheme
+1. Opening screen
+- Start game ta
+- load game take
+- Manual tab
+- Credits tab
 
-3. Design level
-	- 3D models
-	- Placement of elements
+2. In-game pausing with esc
+- pause game
+- save game
+- exit game
 
-4. Skybox
-	- Toony skybox
+3. Implement aesthetic style across all scenes
+
+4. Story outline
+
+
 
 
 
@@ -36,6 +38,27 @@ Shared:
  
  
   ### Previous iterations
+  
+  
+**To design a playable level with transitions, pick-up object, laser, mirror, colour change and doppler effect.**
+
+1. Player spawn points (checkpoints). 
+	- Player death script
+		- Fall from height
+		- reload current level 
+
+2. Implement aesthetic style
+	- outline shader
+	- color scheme
+
+3. Design level
+	- 3D models
+	- Placement of elements
+
+4. Skybox
+	- Toony skybox
+
+_________________________________________________________________
   
   1. Hollow cylindrical space
 
