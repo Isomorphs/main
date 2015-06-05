@@ -13,18 +13,47 @@ public class GameMaster : MonoBehaviour {
 	public float totalTimePlayed;
 	public int currentLevel;
 	public int numberOfPuzzleUnlocked;
+	public Canvas inGameMenu;
 
-	// Use this for initialization
+
+	bool isPaused;
+	
 	void Start () {
 		
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
+		//for testing
 		print ("Music Volume is: " + musicVolume);
+
+		if (Input.GetKeyDown(KeyCode.Escape)) {
+			PauseGame();
+		}
+
 	}
 
 	public void quitGame () {
 		Application.Quit();
+	}
+
+	public void PauseGame() {
+
+		if (isPaused == false) {
+			//activate in-game menu and pause the game.
+			inGameMenu.gameObject.SetActive(true);
+
+			//******************
+			//add or reference your pausing scripts here :)
+			//******************
+			
+			isPaused = true;
+			print ("paused");
+		}
+		else {
+			inGameMenu.gameObject.SetActive(false);
+			
+			isPaused = false;
+			print ("unpaused");
+		}
 	}
 }

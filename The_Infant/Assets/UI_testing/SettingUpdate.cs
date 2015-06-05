@@ -5,6 +5,7 @@ using System.Collections;
 public class SettingUpdate : MonoBehaviour {
 
 	//update settings after users exit options menu.
+	//this is attached to the confirm button of the user preference setting page. 
 	//for now, settings include sound volumes and mouse sensitivity;
 
 	public Slider MusicSlider;
@@ -20,10 +21,7 @@ public class SettingUpdate : MonoBehaviour {
 //		optionsPage = GameObject.Find ("OptionsPage");
 //		mainMenuPage = GameObject.Find("Menu");
 
-		//initialise the values of slide bar;
-		MusicSlider.value = gameMaster.musicVolume;
-		SoundEffectSlider.value = gameMaster.soundEffectVolume;
-		MouseSensitivitySlider.value = gameMaster.mouseSensitivity;
+		RevertSettings();
 	}
 	
 	// Update is called once per frame
@@ -38,5 +36,12 @@ public class SettingUpdate : MonoBehaviour {
 //
 //		mainMenuPage.SetActive(true);
 //		optionsPage.SetActive(false);
+	}
+
+	public void RevertSettings () {
+		//initialise the values of slide bar;
+		MusicSlider.value = gameMaster.musicVolume;
+		SoundEffectSlider.value = gameMaster.soundEffectVolume;
+		MouseSensitivitySlider.value = gameMaster.mouseSensitivity;
 	}
 }
