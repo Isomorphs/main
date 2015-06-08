@@ -42,6 +42,8 @@ public class GameMaster : MonoBehaviour {
 			//activate in-game menu and pause the game.
 			inGameMenu.gameObject.SetActive(true);
 
+			Time.timeScale = 0f;
+
 			//******************
 			//add or reference your pausing scripts here :)
 			//******************
@@ -51,6 +53,8 @@ public class GameMaster : MonoBehaviour {
 		}
 		else {
 			inGameMenu.gameObject.SetActive(false);
+
+			Time.timeScale = 1.0f;
 			
 			isPaused = false;
 			print ("unpaused");
