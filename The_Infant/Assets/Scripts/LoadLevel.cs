@@ -3,13 +3,15 @@ using System.Collections;
 
 public class LoadLevel : MonoBehaviour {
 	
+	public int lvlToLoad;
+
 	//int i;
 	float fadingTime;
-
 	AsyncOperation async;
 
 	//If a parameter is given, load the given scene.
 	public void LoadNewLevel (int i) {
+		lvlToLoad = i;
 		StartCoroutine(LoadOneLevel(i));
 	}
 
