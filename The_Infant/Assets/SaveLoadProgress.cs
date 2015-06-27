@@ -74,7 +74,7 @@ public class SaveLoadProgress : MonoBehaviour {
 			Transform[] itemParent = GameObject.Find("Items").GetComponentsInChildren<Transform>();
 			Transform[] triggerableParent = GameObject.Find ("Triggerables").GetComponentsInChildren<Transform>();
 
-			// Deserialise info saved for retrieval
+			// Deserialise saved file to retrieve position info
 			GameProgressData progress = (GameProgressData)bFormatter.Deserialize(file);			
 
 			file.Close ();
@@ -114,7 +114,7 @@ public class SaveLoadProgress : MonoBehaviour {
 	
 }
 
-// Vector3 is not serialisable in unity so we have to manually change every component (cry face)
+// Vector3 is not serialisable in unity so we have to manually(kinda) change every component (cry face)
 [Serializable]
 class GameProgressData
 {
