@@ -33,6 +33,7 @@ public class GameMaster : MonoBehaviour {
 	}
 
 	public void quitGame () {
+		this.GetComponent<SaveLoadProgress>().Save();
 		Application.Quit();
 	}
 

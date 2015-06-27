@@ -22,6 +22,7 @@ public class LoadLevel : MonoBehaviour {
 
 	//print a message for debugging.
 	void OnLevelWasLoaded () {
+		this.GetComponent<SaveLoadProgress>().Load ();
 		print ("Level was loaded");
 	}
 

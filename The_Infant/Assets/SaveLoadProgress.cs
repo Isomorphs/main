@@ -12,13 +12,23 @@ public class SaveLoadProgress : MonoBehaviour {
 	int itemNo = 0;
 	int triggerableNo = 0;
 	int counter;
+	float tempX;
+	float tempY;
+	float tempZ;
+	Vector3 temp;
+
+	void Vector3Converter(Vector3 input) {
+		tempX = input.x;
+		tempY = input.y;
+		tempZ = input.z;
+	}
 
 	public void Save () {
 		BinaryFormatter bFormatter = new BinaryFormatter ();
 		GameProgressData progress = new GameProgressData ();
 		FileStream file = File.Create(Application.persistentDataPath + "/gameProgress.dat");
 
-		// Get parent objects.
+		// Get parent objects' transform
 		Transform[] itemParent = GameObject.Find("Items").GetComponentsInChildren<Transform>();
 		Transform[] triggerableParent = GameObject.Find ("Triggerables").GetComponentsInChildren<Transform>();
 
@@ -28,17 +38,26 @@ public class SaveLoadProgress : MonoBehaviour {
 		// Track all positions of movable items for saving
 		itemNo = 0;
 		foreach (Transform child in itemParent) {
-			child.position = progress.itemPosition[itemNo];
+			Vector3Converter(child.position);
+			progress.itemPosX[itemNo] = tempX;
+			progress.itemPosY[itemNo] = tempY;
+			progress.itemPosZ[itemNo] = tempZ;
 			itemNo++;
 		}
-
+		
 		triggerableNo = 0;
 		foreach (Transform child in triggerableParent) {
-			child.position = progress.triggerablePosition[triggerableNo];
+			Vector3Converter(child.position);
+			progress.triggerablePosX[triggerableNo] = tempX;
+			progress.triggerablePosY[triggerableNo] = tempY;
+			progress.triggerablePosZ[triggerableNo] = tempZ;
 			triggerableNo++;
 		}
-		
-		progress.playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
+
+		Vector3Converter(GameObject.FindGameObjectWithTag("Player").transform.position);
+		progress.playerPosX = tempX;
+		progress.playerPosY = tempY;
+		progress.playerPosZ = tempZ;
 
 		// Serialize file so that it cannot be directly modified by player
 		bFormatter.Serialize(file, progress);
@@ -62,27 +81,51 @@ public class SaveLoadProgress : MonoBehaviour {
 
 			// Change positions of movable items according to saved info
 			itemNo = 0;
-			foreach (Transform child in itemParent) {
-				progress.itemPosition[itemNo] = child.position;
-				itemNo++;
+			if(itemParent != null) {
+				foreach (Transform child in itemParent) {
+					temp = child.position;
+					temp.x = progress.itemPosX[itemNo];
+					temp.y = progress.itemPosY[itemNo];
+					temp.z = progress.itemPosZ[itemNo];
+					child.position = temp;
+					itemNo++;
+				}
 			}
-			
+	
 			triggerableNo = 0;
-			foreach (Transform child in triggerableParent) {
-				progress.triggerablePosition[triggerableNo] = child.position;
-				triggerableNo++;
+			if(triggerableParent != null) {
+				foreach (Transform child in triggerableParent) {
+					temp = child.position;
+					temp.x = progress.triggerablePosX[triggerableNo];
+					temp.y = progress.triggerablePosY[triggerableNo];
+					temp.z = progress.triggerablePosZ[triggerableNo];
+					child.position = temp;
+					triggerableNo++;
+				}
 			}
 
-			GameObject.FindGameObjectWithTag("Player").transform.position = progress.playerPosition;
-		
+			temp = GameObject.FindGameObjectWithTag("Player").transform.position; 
+			temp.x = progress.playerPosX;
+			temp.y = progress.playerPosY;
+			temp.z = progress.playerPosZ;
+			GameObject.FindGameObjectWithTag("Player").transform.position = temp; 
 		}
 	}
+	
 }
 
+// Vector3 is not serialisable in unity so we have to manually change every component (cry face)
 [Serializable]
-class GameProgressData : MonoBehaviour
+class GameProgressData
 {
-	public Vector3[] itemPosition = new Vector3[100];
-	public Vector3[] triggerablePosition = new Vector3[100];
-	public Vector3 playerPosition;
+	public float[] itemPosX = new float[100];
+	public float[] itemPosY = new float[100];
+	public float[] itemPosZ = new float[100];
+	public float[] triggerablePosX = new float[100];
+	public float[] triggerablePosY = new float[100];
+	public float[] triggerablePosZ = new float[100];
+	public float playerPosX;
+	public float playerPosY;
+	public float playerPosZ;
 }
+

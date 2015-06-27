@@ -5,10 +5,12 @@ public class ButtonTrigger : MonoBehaviour {
 	public int levelToLoad = 1;
 
 	LoadLevel loadLevelScript;
+	GameObject gameController;
 
 	// Use this for initialization
 	void Start () {
-		loadLevelScript = GameObject.FindGameObjectWithTag ("GameController").GetComponent<LoadLevel>();
+		gameController = GameObject.FindGameObjectWithTag ("GameController");
+		loadLevelScript = gameController.GetComponent<LoadLevel>();
 	}
 	
 	// Update is called once per frame
@@ -18,6 +20,7 @@ public class ButtonTrigger : MonoBehaviour {
 
 	void OnCollisionEnter (Collision collision) {
 		if (collision.collider.name == "Button")
+			gameController.GetComponent<SaveLoadProgress>().Save ();
 			loadLevelScript.LoadNewLevel (levelToLoad);
 	}
 }
