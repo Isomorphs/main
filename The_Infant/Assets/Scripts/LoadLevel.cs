@@ -8,9 +8,16 @@ public class LoadLevel : MonoBehaviour {
 	//int i;
 	float fadingTime;
 	AsyncOperation async;
+	PickUpAction pickUpScript;
 
 	//If a parameter is given, load the given scene.
 	public void LoadNewLevel (int i) {
+		if(Application.loadedLevelName != "MainMenu") {
+			pickUpScript = GameObject.FindGameObjectWithTag("Player").GetComponent <PickUpAction> ();
+			if(pickUpScript.carrying == true) {
+				pickUpScript.DropObject ();
+			}
+		}
 		lvlToLoad = i;
 		StartCoroutine(LoadOneLevel(i));
 	}
@@ -22,7 +29,9 @@ public class LoadLevel : MonoBehaviour {
 
 	//print a message for debugging.
 	void OnLevelWasLoaded () {
-		this.GetComponent<SaveLoadProgress>().Load ();
+		if(Application.loadedLevelName != "MainMenu")
+			this.GetComponent<SaveLoadProgress>().Load ();
+
 		print ("Level was loaded");
 	}
 
