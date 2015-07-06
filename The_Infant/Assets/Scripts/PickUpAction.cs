@@ -49,7 +49,7 @@ public class PickUpAction : MonoBehaviour {
 			if (carrying) {
 				DropObject();
 				ThrowObject();
-
+				carriedItem = null;
 			}
 		}
 	}
@@ -89,8 +89,6 @@ public class PickUpAction : MonoBehaviour {
 				this.GetComponent <Rigidbody> ().mass = playerMass + itemMass;
 
 				movementScript.jumpSpeed = newJumpSpeed;
-
-				carriedItem.GetComponent<DontGoThroughThings>().enabled = false;
 			
 				//Disable item's gravity to make it hover
 				itemRB.useGravity = false;
