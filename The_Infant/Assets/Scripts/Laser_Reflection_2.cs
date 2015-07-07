@@ -12,7 +12,6 @@ public class Laser_Reflection_2: MonoBehaviour {
 	public RaycastHit hit;
 	public float range = 200f;
 	public int max_reflection_number = 20;
-	//public int max_refraction_number = 10;
 	public LayerMask BlockingSurface;
 	public float refractiveIndex = 1.5f;
 	
@@ -22,27 +21,24 @@ public class Laser_Reflection_2: MonoBehaviour {
 	private float incidentAngle;
 	private float refractAngle;
 	private Ray laserRay1;
-	private Ray laserRay2;
 	private LineRenderer laser1;
-	private LineRenderer laser2;
 	private float remainingRange;
 	private int reflectionCount;
-	private int refractionCount;
 	private Vector3 newDir;
+	private Vector3 oldDir;
 	private Vector3[] ReflectionPts;
-	private Vector3[] RefractionPts; 
-	//testing
-	//float speed = 9f;
+	private bool refracted = false;
+	private float distanceInGlass;
 
 	void Start () {
 		laser1 = GetComponent<LineRenderer> ();
-		laser2 = GetComponent<LineRenderer> ();
+		//laser2 = GetComponent<LineRenderer> ();
 		reflectionMask = LayerMask.GetMask ("Reflecting Surface");
 		refractionMask = LayerMask.GetMask ("Refracting Surface");
 
 		//create an array to hold all way points data. i.e. the dots to be joined by the line renderer's drawing.
 		ReflectionPts = new Vector3[max_reflection_number];
-		//RefractionPts = new Vector3[max_refraction_number]; 
+		//RefractionPts = new Vector3[max_reflection_number]; 
 		criticalAngle = Mathf.Asin(1.0f/refractiveIndex);
 	}
 
@@ -56,9 +52,9 @@ public class Laser_Reflection_2: MonoBehaviour {
 
 		//track how far the ray can still travel after reflections.
 		remainingRange = range;
-
+	
 		reflectionCount = 0;
-		while (remainingRange > 0f && reflectionCount < max_reflection_number) {
+		while (remainingRange > 0f && (reflectionCount < max_reflection_number)) {
 			if (Physics.Raycast(laserRay1, out hit, remainingRange, refractionMask)) {
 				
 				//store a waypoint. i.e. the place where a reflection takes place
@@ -66,33 +62,42 @@ public class Laser_Reflection_2: MonoBehaviour {
 				
 				//After one hit, minus off from total range the distance travelled by after the previous reflection 
 				remainingRange -= Vector3.Distance(hit.point, laserRay1.origin);
-				
-//				//reset a new origin of the laser ray, starting from the reflecting point
-//				laserRay1.origin = hit.point;
-//				
-//				//reset a new direction of the ray by reflceting the incident vector3 from the plane hit.
-//				newDir = Vector3.Reflect(laserRay1.direction, hit.normal);
-//				laserRay1.direction = newDir;
 
-				RefractionPts = new Vector3[max_reflection_number];
-				RefractionPts[reflectionCount] = hit.point;
+
 
 				incidentAngle = Vector3.Angle (laserRay1.direction, hit.normal);
-				refractAngle = Mathf.Asin (Mathf.Sin (incidentAngle)/refractiveIndex);
-				laserRay2.origin = hit.point;
-				laserRay2.direction = (-hit.normal.normalized + (laserRay1.direction - hit.normal.normalized));
-					
-				if (hit.collider.tag == "LaserTrigger")
-				{
-					//testing
-					//hit.transform.position = hit.transform.position + hit.transform.up * speed * Time.deltaTime;
-					hit.collider.GetComponent <LaserReceiver> ().TriggeredByLaser ();  // Activate triggered actions
-				}
+				if (incidentAngle > 90f) incidentAngle = 180f - incidentAngle;
 
-				reflectionCount += 1;
+				hit.collider.bounds.IntersectRay (laserRay1, out distanceInGlass);
+
+				oldDir = laserRay1.direction;
+				refractAngle = Mathf.Asin (Mathf.Sin (incidentAngle/180f*Mathf.PI)/refractiveIndex);
+				refractAngle = refractAngle/Mathf.PI * 180f;
+
+				newDir = oldDir;
+				newDir = Quaternion.AngleAxis ((refractAngle - incidentAngle), Vector3.Cross (oldDir, hit.normal)) * newDir;  
+
+				laserRay1.direction = newDir;
+
+				laserRay1.origin = hit.point;
+				refracted = true;
+					
+				reflectionCount ++;
 				
 			}
-			else if (Physics.Raycast(laserRay1, out hit, remainingRange, reflectionMask)) {
+			
+			if (refracted) {
+				laserRay1.origin = laserRay1.GetPoint (distanceInGlass);
+				remainingRange -= distanceInGlass;
+
+				ReflectionPts[reflectionCount] = laserRay1.origin;
+				laserRay1.direction = oldDir;
+
+				refracted = false;
+				reflectionCount ++;
+			}
+
+			if (Physics.Raycast(laserRay1, out hit, remainingRange, reflectionMask)) {
 				
 				//store a waypoint. i.e. the place where a reflection takes place
 				ReflectionPts[reflectionCount] = hit.point;
@@ -126,14 +131,18 @@ public class Laser_Reflection_2: MonoBehaviour {
 				}
 				break;
 			}
+
+
+
 			else {
 				ReflectionPts[reflectionCount] = laserRay1.origin + laserRay1.direction.normalized * remainingRange;
-				break;
+
+				break;		
 			}
 		}
-
 		//set the total number of waypoints for the renderer.
 		laser1.SetVertexCount(reflectionCount + 2);
+		//laser2.SetVertexCount (refractionCount +1);
 
 		//initial point (tip of the laser pointer)
 		laser1.SetPosition (0, transform.position);
@@ -141,6 +150,7 @@ public class Laser_Reflection_2: MonoBehaviour {
 		for(int i = 0; i < reflectionCount + 1; i++){
 			laser1.SetPosition(i + 1, ReflectionPts[i]);
 		}
+
 	}
 	
 }
