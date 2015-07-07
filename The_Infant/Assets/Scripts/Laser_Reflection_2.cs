@@ -32,13 +32,11 @@ public class Laser_Reflection_2: MonoBehaviour {
 
 	void Start () {
 		laser1 = GetComponent<LineRenderer> ();
-		//laser2 = GetComponent<LineRenderer> ();
 		reflectionMask = LayerMask.GetMask ("Reflecting Surface");
 		refractionMask = LayerMask.GetMask ("Refracting Surface");
 
 		//create an array to hold all way points data. i.e. the dots to be joined by the line renderer's drawing.
 		ReflectionPts = new Vector3[max_reflection_number];
-		//RefractionPts = new Vector3[max_reflection_number]; 
 		criticalAngle = Mathf.Asin(1.0f/refractiveIndex);
 	}
 
