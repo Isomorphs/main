@@ -7,6 +7,5 @@ public class LaserReceiver : MonoBehaviour {
 	
 	public void TriggeredByLaser () {
 		print ("Trigger works!"); // Should be replaced by more level-specific codes in the future
-		GetComponent<Laser_Rotation>().OpenTheDoor();
 	}
 }
