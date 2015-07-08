@@ -105,6 +105,9 @@ public class PickUpAction : MonoBehaviour {
 				if (hit.collider.tag == "Laser") {
 					upOffset = -1f; rightOffset = 1f;
 				}
+				else {
+					upOffset = rightOffset = 0f;
+				}
 			}
 
 		}

@@ -27,32 +27,33 @@ public class laser_action : MonoBehaviour {
 
 	void Update () {
 		if (triggered){
-			if (lift_control.maxHeight < targetFloor)
-				lift_control.maxHeight = targetFloor;
+			if (!lift_control.keys[currentFloor + 1])
+				lift_control.keys[currentFloor + 1] = true;
 		}
-		else if (lift_control.maxHeight >= targetFloor){
-			lift_control.maxHeight = currentFloor;
-			rendering.material.color = initialColor;
+		else if (lift_control.keys[currentFloor + 1]){
+			print ("detrig");
+			lift_control.keys[currentFloor + 1] = false;
+			//rendering.material.color = initialColor;
 		}
 		triggered = false;
 
-//		timeElapsed += Time.deltaTime;
-//		if (timeElapsed > period) {
-//			rendering.material.color = initialColor;
-//			timeElapsed = 0;
-//		}
-//		rendering.material.color = Color.Lerp(rendering.material.color, initialColor, timeElapsed / period);
+
 
 	}
 	
 	// Update is called once per frame
 	public void TriggeredByLaser () {
-		//print(triggeredLaserFrame);
+		print("triggered");
 		triggered = true;
 		transform.RotateAround(transform.position, Vector3.forward, speed);
 
 		rendering.material.color = PulsingColor;
-	
+		timeElapsed += Time.deltaTime;
+		if (timeElapsed > period) {
+			rendering.material.color = initialColor;
+			timeElapsed = 0;
+		}
+		rendering.material.color = Color.Lerp(rendering.material.color, initialColor, timeElapsed / period);
 
 	}
 

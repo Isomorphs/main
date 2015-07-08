@@ -60,6 +60,7 @@ public class Laser_Reflection : MonoBehaviour {
 				newDir = Vector3.Reflect(laserRay.direction, hit.normal);
 				laserRay.direction = newDir;
 
+				//additional code 8 - Jul - 15
 				if (hit.collider.tag == "LaserTrigger")
 				{
 					//testing
@@ -73,6 +74,8 @@ public class Laser_Reflection : MonoBehaviour {
 			//stop the laser when it hits an opaque object
 			else if (Physics.Raycast(laserRay, out hit, remainingRange, BlockingSurface)) {
 				ReflectionPts[reflectionCount] = hit.point;
+
+				//additional code 8 - Jul - 15
 				if (hit.collider.tag == "LaserTrigger")
 				{
 					hit.collider.gameObject.SendMessage("TriggeredByLaser");  // Activate triggered actions

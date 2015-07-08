@@ -7,11 +7,13 @@ public class lift_movement : MonoBehaviour {
 	public float speed;
 	public int destination;
 	public int maxHeight, minHeight;
+	public bool[] keys = new bool[10];
 	Transform trans;
 
 	// Use this for initialization
 	void Start () {
 		trans = GetComponent<Transform>();
+		keys[0] = true;
 	}
 	
 	// Update is called once per frame
@@ -40,5 +42,10 @@ public class lift_movement : MonoBehaviour {
 			trans.Translate(Vector3.up * speed * Time.deltaTime);
 		else
 			trans.Translate(Vector3.up * speed * Time.deltaTime * -1f);
+
+		for (int i = 0; i < 10; i++) {
+			if (!keys[i])
+				maxHeight = i - 1;
+		}
 	}
 }
