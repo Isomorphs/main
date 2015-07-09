@@ -30,6 +30,7 @@ public class Laser_Reflection_2: MonoBehaviour {
 	private Vector3[] ReflectionPts;
 	private bool refracted = false;
 	private float distanceInGlass;
+	private string initialGlass;
 
 	void Start () {
 		laser1 = GetComponent<LineRenderer> ();
@@ -79,7 +80,7 @@ public class Laser_Reflection_2: MonoBehaviour {
 				newDir = Quaternion.AngleAxis ((refractAngle - incidentAngle), Vector3.Cross (oldDir, hit.normal)) * oldDir;  
 				
 				laserRay1.direction = newDir;
-
+				initialGlass =  hit.collider.gameObject.name;
 				laserRay2.origin = laserRay1.GetPoint (remainingRange);
 				laserRay2.direction = -laserRay1.direction;
 
@@ -87,47 +88,51 @@ public class Laser_Reflection_2: MonoBehaviour {
 				refracted = true;
 				
 				reflectionCount ++;
-				
-			}
 
-			if (refracted) {
-				if (Physics.Raycast(laserRay2, out hit, remainingRange, refractionMask)) {
+
+				if (refracted) {
+
+					if (Physics.Raycast(laserRay2, out hit, remainingRange, refractionMask)) {
+						while(hit.collider.gameObject.name != initialGlass) {
+							laserRay2.origin = hit.point;
+							Physics.Raycast(laserRay2, out hit, remainingRange, refractionMask);
+						}
+						distanceInGlass = Vector3.Distance (hit.point, laserRay1.origin);
 					
-					distanceInGlass = Vector3.Distance (hit.point, laserRay1.origin);
-				
-					laserRay1.origin = hit.point;
-					ReflectionPts[reflectionCount] = laserRay1.origin;
-					remainingRange -= distanceInGlass;
-					incidentAngle = Vector3.Angle (laserRay2.direction, -hit.normal);
+						laserRay1.origin = hit.point;
+						ReflectionPts[reflectionCount] = laserRay1.origin;
+						remainingRange -= distanceInGlass;
+						incidentAngle = Vector3.Angle (laserRay2.direction, -hit.normal);
 
-					// Total internal reflection
-					if (incidentAngle > criticalAngle) {
-						newDir = Vector3.Reflect(laserRay1.direction, hit.normal);
-						laserRay1.direction = newDir;
-						laserRay2.origin = laserRay1.GetPoint (remainingRange);
-						laserRay2.direction = -laserRay1.direction;
+						// Total internal reflection
+						if (incidentAngle > criticalAngle) {
+							newDir = Vector3.Reflect(laserRay1.direction, hit.normal);
+							laserRay1.direction = newDir;
+							laserRay2.origin = laserRay1.GetPoint (remainingRange);							
+							laserRay2.direction = -laserRay1.direction;
+							
+							print ("distance 2 = " + distanceInGlass);
 						
-						print ("distance 2 = " + distanceInGlass);
+						}
+						// Exiting glass
+						else {
+							oldDir = laserRay1.direction;
+							refractAngle = Mathf.Asin (Mathf.Sin (incidentAngle/180f*Mathf.PI)*refractiveIndex);
+							refractAngle = refractAngle/Mathf.PI * 180f;
+							newDir = Quaternion.AngleAxis ((incidentAngle - refractAngle), Vector3.Cross (oldDir, hit.normal)) * oldDir;  
+							
+							laserRay1.direction = newDir;
+			
+							refracted = false;
+						}
+						reflectionCount ++;
+						}
 					}
-
-					// Exiting glass
-					else {
-						oldDir = laserRay1.direction;
-						refractAngle = Mathf.Asin (Mathf.Sin (incidentAngle/180f*Mathf.PI)*refractiveIndex);
-						refractAngle = refractAngle/Mathf.PI * 180f;
-						newDir = Quaternion.AngleAxis ((incidentAngle - refractAngle), Vector3.Cross (oldDir, hit.normal)) * oldDir;  
-						
-						laserRay1.direction = newDir;
-						
-						
-						
-						refracted = false;
-					}
-					reflectionCount ++;
-				}
 			}
 
-			if (Physics.Raycast(laserRay1, out hit, remainingRange, reflectionMask)) {
+				
+
+			else if (Physics.Raycast(laserRay1, out hit, remainingRange, reflectionMask)) {
 				
 				//store a waypoint. i.e. the place where a reflection takes place
 				ReflectionPts[reflectionCount] = hit.point;
