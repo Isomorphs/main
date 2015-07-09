@@ -21,6 +21,7 @@ public class Laser_Reflection_2: MonoBehaviour {
 	private float incidentAngle;
 	private float refractAngle;
 	private Ray laserRay1;
+	private Ray laserRay2;
 	private LineRenderer laser1;
 	private float remainingRange;
 	private int reflectionCount;
@@ -37,7 +38,7 @@ public class Laser_Reflection_2: MonoBehaviour {
 
 		//create an array to hold all way points data. i.e. the dots to be joined by the line renderer's drawing.
 		ReflectionPts = new Vector3[max_reflection_number];
-		criticalAngle = Mathf.Asin(1.0f/refractiveIndex);
+		criticalAngle = Mathf.Asin(1.0f/refractiveIndex) / Mathf.PI * 180f;
 	}
 
 	void Update () {
@@ -52,7 +53,10 @@ public class Laser_Reflection_2: MonoBehaviour {
 		remainingRange = range;
 	
 		reflectionCount = 0;
+
+		//distanceInGlass = 0f;
 		while (remainingRange > 0f && (reflectionCount < max_reflection_number)) {
+
 			if (Physics.Raycast(laserRay1, out hit, remainingRange, refractionMask)) {
 				
 				//store a waypoint. i.e. the place where a reflection takes place
@@ -60,39 +64,67 @@ public class Laser_Reflection_2: MonoBehaviour {
 				
 				//After one hit, minus off from total range the distance travelled by after the previous reflection 
 				remainingRange -= Vector3.Distance(hit.point, laserRay1.origin);
-
-
-
+				
+				
+				
 				incidentAngle = Vector3.Angle (laserRay1.direction, hit.normal);
 				if (incidentAngle > 90f) incidentAngle = 180f - incidentAngle;
 
-				hit.collider.bounds.IntersectRay (laserRay1, out distanceInGlass);
-
+				laserRay1.origin = hit.point;
+				
 				oldDir = laserRay1.direction;
 				refractAngle = Mathf.Asin (Mathf.Sin (incidentAngle/180f*Mathf.PI)/refractiveIndex);
 				refractAngle = refractAngle/Mathf.PI * 180f;
-
-				newDir = oldDir;
-				newDir = Quaternion.AngleAxis ((refractAngle - incidentAngle), Vector3.Cross (oldDir, hit.normal)) * newDir;  
-
+				
+				newDir = Quaternion.AngleAxis ((refractAngle - incidentAngle), Vector3.Cross (oldDir, hit.normal)) * oldDir;  
+				
 				laserRay1.direction = newDir;
 
-				laserRay1.origin = hit.point;
+				laserRay2.origin = laserRay1.GetPoint (remainingRange);
+				laserRay2.direction = -laserRay1.direction;
+
+
 				refracted = true;
-					
+				
 				reflectionCount ++;
 				
 			}
-			
+
 			if (refracted) {
-				laserRay1.origin = laserRay1.GetPoint (distanceInGlass);
-				remainingRange -= distanceInGlass;
+				if (Physics.Raycast(laserRay2, out hit, remainingRange, refractionMask)) {
+					
+					distanceInGlass = Vector3.Distance (hit.point, laserRay1.origin);
+				
+					laserRay1.origin = hit.point;
+					ReflectionPts[reflectionCount] = laserRay1.origin;
+					remainingRange -= distanceInGlass;
+					incidentAngle = Vector3.Angle (laserRay2.direction, -hit.normal);
 
-				ReflectionPts[reflectionCount] = laserRay1.origin;
-				laserRay1.direction = oldDir;
+					// Total internal reflection
+					if (incidentAngle > criticalAngle) {
+						newDir = Vector3.Reflect(laserRay1.direction, hit.normal);
+						laserRay1.direction = newDir;
+						laserRay2.origin = laserRay1.GetPoint (remainingRange);
+						laserRay2.direction = -laserRay1.direction;
+						
+						print ("distance 2 = " + distanceInGlass);
+					}
 
-				refracted = false;
-				reflectionCount ++;
+					// Exiting glass
+					else {
+						oldDir = laserRay1.direction;
+						refractAngle = Mathf.Asin (Mathf.Sin (incidentAngle/180f*Mathf.PI)*refractiveIndex);
+						refractAngle = refractAngle/Mathf.PI * 180f;
+						newDir = Quaternion.AngleAxis ((incidentAngle - refractAngle), Vector3.Cross (oldDir, hit.normal)) * oldDir;  
+						
+						laserRay1.direction = newDir;
+						
+						
+						
+						refracted = false;
+					}
+					reflectionCount ++;
+				}
 			}
 
 			if (Physics.Raycast(laserRay1, out hit, remainingRange, reflectionMask)) {
@@ -120,6 +152,7 @@ public class Laser_Reflection_2: MonoBehaviour {
 				reflectionCount++;
 				
 			}
+
 			//stop the laser when it hits an opaque object
 			else if (Physics.Raycast(laserRay1, out hit, remainingRange, BlockingSurface)) {
 				ReflectionPts[reflectionCount] = hit.point;
@@ -150,5 +183,6 @@ public class Laser_Reflection_2: MonoBehaviour {
 		}
 
 	}
+	
 	
 }
