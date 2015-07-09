@@ -3,7 +3,7 @@ using System.Collections;
 
 public class laser_action : MonoBehaviour {
 
-	/* I wrote this for testing purpose only */
+	/* Used for scene_yz (lift trigger) */
 	public Color PulsingColor;
 	public float speed = 1f;
 	public float period = 2f;
@@ -26,21 +26,30 @@ public class laser_action : MonoBehaviour {
 	}
 
 	void Update () {
-		if ((triggeredLastFrame && !triggered) || (!triggeredLastFrame && triggered)){
-			lift_control.UpdateLevelLimits();
+
+		if ((triggeredLastFrame && !triggered)){ //if laser stops triggering this.
+			GetNewLiftKey(targetFloor, false);
+			print ("update lift");
+		} else if (!triggeredLastFrame && triggered){ //if laser begins triggering this.
+			GetNewLiftKey(targetFloor, true);
 			print ("update lift");
 		}
 
 		triggeredLastFrame = triggered;
 		triggered = false;
 	}
-	
+
+	void GetNewLiftKey(int target, bool isAccessible){
+		lift_control.keys[target] = isAccessible;
+		lift_control.UpdateLevelLimits();
+	}
+
 	// Update is called once per frame
 	public void TriggeredByLaser () {
 		//print("triggered");
 		triggered = true;
 		transform.RotateAround(transform.position, Vector3.forward, speed);
-		lift_control.UpdateLevelLimits();
+//		lift_control.UpdateLevelLimits();
 //		rendering.material.color = PulsingColor;
 //		timeElapsed += Time.deltaTime;
 //		if (timeElapsed > period) {
