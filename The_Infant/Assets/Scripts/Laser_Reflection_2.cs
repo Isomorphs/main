@@ -151,7 +151,7 @@ public class Laser_Reflection_2: MonoBehaviour {
 				{
 					//testing
 					//hit.transform.position = hit.transform.position + hit.transform.up * speed * Time.deltaTime;
-					hit.collider.GetComponent <LaserReceiver> ().TriggeredByLaser ();  // Activate triggered actions
+					hit.collider.SendMessage("TriggeredByLaser");  // Activate triggered actions
 				}
 				
 				reflectionCount++;
@@ -163,7 +163,7 @@ public class Laser_Reflection_2: MonoBehaviour {
 				ReflectionPts[reflectionCount] = hit.point;
 				if (hit.collider.tag == "LaserTrigger")
 				{
-					hit.collider.GetComponent <LaserReceiver> ().TriggeredByLaser ();  // Activate triggered actions
+					hit.collider.SendMessage("TriggeredByLaser");   // Activate triggered actions
 				}
 				break;
 			}

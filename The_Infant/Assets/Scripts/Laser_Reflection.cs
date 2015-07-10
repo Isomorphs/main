@@ -33,6 +33,7 @@ public class Laser_Reflection : MonoBehaviour {
 	}
 
 	void Update () {
+		ReflectionPts.Initialize();
 
 		//initialise the orientation and location of laser just emitted out of the emitter.
 		laserRay.origin = transform.position;
@@ -45,34 +46,9 @@ public class Laser_Reflection : MonoBehaviour {
 
 		reflectionCount = 0;
 		while (remainingRange > 0f && reflectionCount < max_reflection_number) {
-			if (Physics.Raycast(laserRay, out hit, remainingRange, reflectionMask)) {
 
-				//store a waypoint. i.e. the place where a reflection takes place
-				ReflectionPts[reflectionCount] = hit.point;
-
-				//After one hit, minus off from total range the distance travelled by after the previous reflection 
-				remainingRange -= Vector3.Distance(hit.point, laserRay.origin);
-				
-				//reset a new origin of the laser ray, starting from the reflecting point
-				laserRay.origin = hit.point;
-				
-				//reset a new direction of the ray by reflceting the incident vector3 from the plane hit.
-				newDir = Vector3.Reflect(laserRay.direction, hit.normal);
-				laserRay.direction = newDir;
-
-				//additional code 8 - Jul - 15
-				if (hit.collider.tag == "LaserTrigger")
-				{
-					//testing
-					//hit.transform.position = hit.transform.position + hit.transform.up * speed * Time.deltaTime;
-					hit.collider.gameObject.SendMessage("TriggeredByLaser"); // Activate triggered actions
-				}
-
-				reflectionCount++;
-
-			}
 			//stop the laser when it hits an opaque object
-			else if (Physics.Raycast(laserRay, out hit, remainingRange, BlockingSurface)) {
+			if (Physics.Raycast(laserRay, out hit, remainingRange, BlockingSurface)) {
 				ReflectionPts[reflectionCount] = hit.point;
 
 				//additional code 8 - Jul - 15
@@ -82,10 +58,37 @@ public class Laser_Reflection : MonoBehaviour {
 				}
 				break;
 			}
+			else if (Physics.Raycast(laserRay, out hit, remainingRange, reflectionMask)) {
+				
+				//store a waypoint. i.e. the place where a reflection takes place
+				ReflectionPts[reflectionCount] = hit.point;
+				
+				//After one hit, minus off from total range the distance travelled by after the previous reflection 
+				remainingRange -= Vector3.Distance(hit.point, laserRay.origin);
+				
+				//reset a new origin of the laser ray, starting from the reflecting point
+				laserRay.origin = hit.point;
+				
+				//reset a new direction of the ray by reflceting the incident vector3 from the plane hit.
+				newDir = Vector3.Reflect(laserRay.direction, hit.normal);
+				laserRay.direction = newDir;
+				
+				//additional code 8 - Jul - 15
+				if (hit.collider.tag == "LaserTrigger")
+				{
+					//testing
+					//hit.transform.position = hit.transform.position + hit.transform.up * speed * Time.deltaTime;
+					hit.collider.gameObject.SendMessage("TriggeredByLaser"); // Activate triggered actions
+				}
+				
+				reflectionCount++;
+				
+			}
 			else {
 				ReflectionPts[reflectionCount] = laserRay.origin + laserRay.direction.normalized * remainingRange;
 				break;
 			}
+
 		}
 
 		//set the total number of waypoints for the renderer.
