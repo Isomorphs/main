@@ -2,15 +2,27 @@
 using System.Collections;
 
 public class lift_movement : MonoBehaviour {
-
+	
+	static int num_levels = 10; //number of levels in total
+	
 	public int initLevel = 0;
-	public float[] level_heights = new float[10];
 	public float speed;
 	public int destination;
 	public int maxHeight, minHeight;
-	public bool[] keys = new bool[10];
+
+	//enter the height of each level in the editor
+	public float[] level_heights = new float[num_levels];
+	
+	//store the keys to each level
+	public bool[] keys = new bool[num_levels];
+
+	//drag panels into this array in the editor mode
+	public GameObject[] control_panels = new GameObject[num_levels];
+
 	Transform trans;
 	//float smoothing = 10f;
+
+	//The position where the lift tries to reach in every frame
 	Vector3 finalPosition;
 
 	// Use this for initialization
@@ -19,6 +31,7 @@ public class lift_movement : MonoBehaviour {
 		keys[0] = true;
 		finalPosition = trans.position;
 		finalPosition.y = level_heights[initLevel];
+		UpdateLevelLimits();
 	}
 	
 	// Update is called once per frame
@@ -48,10 +61,32 @@ public class lift_movement : MonoBehaviour {
 		trans.position = Vector3.Lerp(trans.position, finalPosition, Time.deltaTime * speed);
 	}
 
-	public void UpdateLevelLimits (){
-		if (!keys[destination]) return;
+	//update the color of all panels' buttons
+	void UpdateControlPanel(){
+		Color color_to_set;
+		foreach (GameObject panel in control_panels){
+			for (int i = 0; i < num_levels; i++){
+				if (i >= minHeight && i <= maxHeight)
+					color_to_set = Color.green;
+				else
+					color_to_set = Color.red;
 
-		for (int i = destination; i < 10; i++){
+				if (panel != null)
+					panel.GetComponent<Lift_control_panel_logic>().lightUpButtons(i, color_to_set);
+			}
+		}
+	}
+
+	//Update the values of max/min heights whenever keys are changed. Update the controls panels too.
+	public void UpdateLevelLimits (){
+		//the lift will be stuck if the key to the current level is lost!
+		if (!keys[destination]) {
+			maxHeight = minHeight = destination;
+			UpdateControlPanel();
+			return;
+		}
+
+		for (int i = destination; i < num_levels; i++){
 			if (keys[i])
 				continue;
 			else {
@@ -68,5 +103,6 @@ public class lift_movement : MonoBehaviour {
 				break;
 			}
 		}
+		UpdateControlPanel();
 	}
 }
