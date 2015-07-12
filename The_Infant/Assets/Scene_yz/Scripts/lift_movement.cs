@@ -26,11 +26,14 @@ public class lift_movement : MonoBehaviour {
 	Vector3 finalPosition;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		trans = GetComponent<Transform>();
 		keys[0] = true;
 		finalPosition = trans.position;
 		finalPosition.y = level_heights[initLevel];
+	}
+
+	void Start(){
 		UpdateLevelLimits();
 	}
 	
@@ -58,7 +61,12 @@ public class lift_movement : MonoBehaviour {
 			print (maxHeight.ToString());
 		}
 		finalPosition.y = level_heights[destination];
-		trans.position = Vector3.Lerp(trans.position, finalPosition, Time.deltaTime * speed);
+
+	}
+
+	//move the lift!
+	void FixedUpdate(){
+		trans.position = Vector3.Lerp(trans.position, finalPosition, Time.fixedDeltaTime * speed);
 	}
 
 	//update the color of all panels' buttons
@@ -66,13 +74,14 @@ public class lift_movement : MonoBehaviour {
 		Color color_to_set;
 		foreach (GameObject panel in control_panels){
 			for (int i = 0; i < num_levels; i++){
+				if (panel == null) break;
+
 				if (i >= minHeight && i <= maxHeight)
 					color_to_set = Color.green;
 				else
 					color_to_set = Color.red;
 
-				if (panel != null)
-					panel.GetComponent<Lift_control_panel_logic>().lightUpButtons(i, color_to_set);
+				panel.GetComponent<Lift_control_panel_logic>().lightUpButtons(i, color_to_set);
 			}
 		}
 	}

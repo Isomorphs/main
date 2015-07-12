@@ -33,7 +33,7 @@ public class InteractionWithObjects : MonoBehaviour {
 
 	void Update(){
 		camray = cam.ScreenPointToRay(centre);
-//		Debug.DrawLine(camray.origin, hit.point, Color.red, Time.deltaTime * 60);
+		Debug.DrawLine(camray.origin, hit.point, Color.red, Time.deltaTime * 60);
 
 		//if carrying anything, there is no need to do raycast.
 		if (carrying || !Physics.Raycast(camray, out hit, interactionDistance, mask)){
@@ -46,6 +46,13 @@ public class InteractionWithObjects : MonoBehaviour {
 				item = null;
 			} else {
 				PickUp();
+			}
+
+			if (hit.collider.CompareTag("Interact")){
+				hit.collider.SendMessage("OnHitByCamRay");
+				print ("interact");
+			} else {
+				print("not interactable");
 			}
 		}
 		if (carrying && Input.GetKeyDown(KeyCode.Q)){
@@ -64,7 +71,7 @@ public class InteractionWithObjects : MonoBehaviour {
 	}
 
 	void PickUp(){
-		if (hit.collider == null || hit.collider.attachedRigidbody == null) return;
+		if (!hit.transform.CompareTag("PickUp") || hit.collider == null || hit.collider.attachedRigidbody == null) return;
 
 		if (hit.collider.attachedRigidbody.mass > strength) {
 			print("not strong enough");
