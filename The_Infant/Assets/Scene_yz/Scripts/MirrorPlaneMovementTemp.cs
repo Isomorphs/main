@@ -6,12 +6,10 @@ public class MirrorPlaneMovementTemp : MonoBehaviour {
 	//adjust the transform of mirror surface (plane) automatically in accordance to mirror body
 
 	public GameObject mirrorBody; //attach the mirror body (preferably a cube) to this game object in the editor
-	Transform transform;
 	float thickness_of_glue;
 
 	// Use this for initialization
 	void Start () {
-		transform = GetComponent<Transform>();
 		//initialise the size of the mirror according to the size of the attached mirror body.
 		Vector3 temp = transform.localScale;
 		temp.x = mirrorBody.transform.localScale.x / 10f * 0.9f;

@@ -17,7 +17,7 @@ public class CharacterMovement : MonoBehaviour
 	private bool grounded = true;
 
 	Quaternion previousRot;
-	Vector3 previousPos;
+//	Vector3 previousPos;
 
 	// Use this for initialization
 	void Awake ()
@@ -44,7 +44,7 @@ public class CharacterMovement : MonoBehaviour
 			Move (h, v);
 		}
 		previousRot = playerRB.transform.rotation;
-		previousPos = playerRB.transform.position;
+//		previousPos = playerRB.transform.position;
 	}
 
 	void Move (float h, float v)

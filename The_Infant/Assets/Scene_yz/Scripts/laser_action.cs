@@ -9,18 +9,18 @@ public class laser_action : MonoBehaviour {
 	public float period = 2f;
 	public int targetFloor, currentFloor;
 
-	Renderer rendering;
-	Color initialColor;
-	float timeElapsed;
+//	Renderer rendering;
+//	Color initialColor;
+//	float timeElapsed;
 	bool triggered = false, triggeredLastFrame = false;
 	lift_movement lift_control;
 	float level_height = 35f;  //scene specific!
 	
 	// Use this for initialization
 	void Start () {
-		rendering = GetComponent<Renderer>();
-		initialColor = rendering.material.color;
-		timeElapsed = 0;
+//		rendering = GetComponent<Renderer>();
+//		initialColor = rendering.material.color;
+//		timeElapsed = 0;
 		lift_control = GameObject.Find("lift").GetComponent<lift_movement>();
 		currentFloor = (int)(GetComponent<Transform>().position.y / level_height);
 	}

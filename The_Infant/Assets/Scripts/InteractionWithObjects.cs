@@ -21,7 +21,7 @@ public class InteractionWithObjects : MonoBehaviour {
 	Transform initTrans;
 	float initMass;
 	float smoothing = 1000f;
-	public CharacterMovement movement;
+	CharacterMovement movement;
 	float lastVelocity;
 
 	void Start(){
@@ -126,6 +126,7 @@ public class InteractionWithObjects : MonoBehaviour {
 				movement.isForbidden = true;
 				print ("colliding");
 			}
+			lastVelocity = col.rigidbody.velocity.magnitude;
 		}
 	}
 }
