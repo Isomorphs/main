@@ -9,11 +9,15 @@ public class CharacterMovement : MonoBehaviour
 	public float jumpSpeed = 10f;
 	public float mouseSensitivity = 60f;
 	public float verticalRange = 80f;
+	public bool isForbidden = false;
 
 	private Vector3 movement;
 	private Rigidbody playerRB;
 	private float rotV = 0f;
 	private bool grounded = true;
+
+	Quaternion previousRot;
+	Vector3 previousPos;
 
 	// Use this for initialization
 	void Awake ()
@@ -29,10 +33,18 @@ public class CharacterMovement : MonoBehaviour
 	
 	void FixedUpdate ()
 	{
-		float h = Input.GetAxisRaw ("Horizontal");
-		float v = Input.GetAxisRaw ("Vertical");
-	
-		Move (h, v);
+		if (isForbidden){
+			transform.rotation = previousRot;
+//			transform.position = previousPos;
+			isForbidden = false;
+		} else {
+			float h = Input.GetAxisRaw ("Horizontal");
+			float v = Input.GetAxisRaw ("Vertical");
+			
+			Move (h, v);
+		}
+		previousRot = playerRB.transform.rotation;
+		previousPos = playerRB.transform.position;
 	}
 
 	void Move (float h, float v)
@@ -44,7 +56,6 @@ public class CharacterMovement : MonoBehaviour
 		rotV = Mathf.Clamp (rotV, -verticalRange, verticalRange);
 
 		Camera.main.transform.localRotation = Quaternion.Euler (rotV, 0, 0);
-
 
 		transform.Rotate (0, rotH, 0);
 
