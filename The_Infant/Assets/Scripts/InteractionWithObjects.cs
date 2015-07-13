@@ -40,6 +40,8 @@ public class InteractionWithObjects : MonoBehaviour {
 			hit = new RaycastHit(); //reset the hit info if not hitting anything.
 		}
 
+		print ("haha");
+
 		if (Input.GetKeyDown(KeyCode.E)){
 			if (carrying){
 				Drop();
@@ -48,12 +50,14 @@ public class InteractionWithObjects : MonoBehaviour {
 				PickUp();
 			}
 
-			if (hit.collider.CompareTag("Interact")){
-				hit.collider.SendMessage("OnHitByCamRay");
-				print ("interact");
-			} else {
-				print("not interactable");
-			}
+		
+
+//			if (hit.collider.CompareTag("Interact")){
+//				hit.collider.SendMessage("OnHitByCamRay");
+//				print ("interact");
+//			} else {
+//				print("not interactable");
+//			}
 		}
 		if (carrying && Input.GetKeyDown(KeyCode.Q)){
 			Drop();
@@ -71,7 +75,7 @@ public class InteractionWithObjects : MonoBehaviour {
 	}
 
 	void PickUp(){
-		if (!hit.transform.CompareTag("PickUp") || hit.collider == null || hit.collider.attachedRigidbody == null) return;
+		if (hit.collider == null || hit.collider.attachedRigidbody == null) return;
 
 		if (hit.collider.attachedRigidbody.mass > strength) {
 			print("not strong enough");
