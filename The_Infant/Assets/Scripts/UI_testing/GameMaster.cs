@@ -24,7 +24,7 @@ public class GameMaster : MonoBehaviour {
 
 	void Update () {
 		//for testing
-		print ("Music Volume is: " + musicVolume);
+//		print ("Music Volume is: " + musicVolume);
 
 		if (Input.GetKeyDown(KeyCode.Escape)) {
 			PauseGame();

@@ -24,6 +24,8 @@ public class InteractionWithObjects : MonoBehaviour {
 	CharacterMovement movement;
 	float lastVelocity;
 
+	GameObject lastObjectHit = null;
+
 	void Start(){
 		cam = Camera.main.GetComponent<Camera>();
 		centre = new Vector3(cam.pixelWidth / 2f, cam.pixelHeight / 2f, 0);
@@ -40,10 +42,16 @@ public class InteractionWithObjects : MonoBehaviour {
 			hit = new RaycastHit(); //reset the hit info if not hitting anything.
 		}
 		Debug.DrawLine(camray.origin, hit.point, Color.red, Time.deltaTime * 60);
-		if (hit.transform != null)
-			print (hit.transform.gameObject.ToString());
-//		print ("haha");
-
+		if (hit.transform != null){
+			if (hit.transform.CompareTag("Interact")){
+				print (hit.transform.gameObject.ToString());
+				hit.transform.SendMessage("OnHitByCamRay");
+			}
+			lastObjectHit = hit.transform.gameObject;
+		} else if (lastObjectHit != null){
+				if (lastObjectHit.CompareTag("Interact")) lastObjectHit.SendMessage("OnCamRayExit");
+				lastObjectHit = null;
+		}
 		if (Input.GetKeyDown(KeyCode.E)){
 			if (carrying){
 				Drop();
@@ -51,22 +59,12 @@ public class InteractionWithObjects : MonoBehaviour {
 			} else {
 				PickUp();
 			}
-
-		
-
-//			if (hit.collider.CompareTag("Interact")){
-//				hit.collider.SendMessage("OnHitByCamRay");
-//				print ("interact");
-//			} else {
-//				print("not interactable");
-//			}
 		}
 		if (carrying && Input.GetKeyDown(KeyCode.Q)){
 			Drop();
 			Throw();
 			item = null;
 		}
-
 	}
 
 	void FixedUpdate(){
