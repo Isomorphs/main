@@ -13,7 +13,7 @@ public class Lift_control_panel_logic : MonoBehaviour {
 		for (var i = 0; i < transform.childCount; i++){
 			int child_index = int.Parse(transform.GetChild(i).GetComponentInChildren<TextMesh>().text);
 			buttons[child_index] = transform.GetChild(i).GetComponent<Renderer>();
-			print (buttons[child_index].ToString());
+//			print (buttons[child_index].ToString());
 		}
 	}
 	// change the color of child with index i into the desired color

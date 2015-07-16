@@ -163,7 +163,7 @@ public class Laser_Reflection_2: MonoBehaviour
 
 				//stop the laser when it hits an opaque object
 				else {
-					print ("Blocked");
+//					print ("Blocked");
 					ReflectionPts [reflectionCount] = hit.point;
 					if (hit.collider.tag == "LaserTrigger") {
 						hit.collider.SendMessage ("TriggeredByLaser");   // Activate triggered actions

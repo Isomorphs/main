@@ -33,14 +33,16 @@ public class InteractionWithObjects : MonoBehaviour {
 
 	void Update(){
 		camray = cam.ScreenPointToRay(centre);
-		Debug.DrawLine(camray.origin, hit.point, Color.red, Time.deltaTime * 60);
+
 
 		//if carrying anything, there is no need to do raycast.
 		if (carrying || !Physics.Raycast(camray, out hit, interactionDistance, mask)){
 			hit = new RaycastHit(); //reset the hit info if not hitting anything.
 		}
-
-		print ("haha");
+		Debug.DrawLine(camray.origin, hit.point, Color.red, Time.deltaTime * 60);
+		if (hit.transform != null)
+			print (hit.transform.gameObject.ToString());
+//		print ("haha");
 
 		if (Input.GetKeyDown(KeyCode.E)){
 			if (carrying){
@@ -70,7 +72,7 @@ public class InteractionWithObjects : MonoBehaviour {
 	void FixedUpdate(){
 		if (carrying) {
 			carry();
-			print ("carrying");
+//			print ("carrying");
 		}
 	}
 
