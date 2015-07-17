@@ -33,6 +33,9 @@ public class Laser_Reflection_2: MonoBehaviour
 	private float distanceInGlass;
 	private string initialGlass;
 
+//	Renderer rend;
+//	Color initColor;
+
 	void Start ()
 	{
 		laser1 = GetComponent<LineRenderer> ();
@@ -43,10 +46,13 @@ public class Laser_Reflection_2: MonoBehaviour
 		//create an array to hold all way points data. i.e. the dots to be joined by the line renderer's drawing.
 		ReflectionPts = new Vector3[max_reflection_number];
 		criticalAngle = Mathf.Asin (1.0f / refractiveIndex) / Mathf.PI * 180f;
+//		rend = GetComponentInParent<Renderer>();
 	}
 
 	void Update ()
 	{
+//		if (gameObject.activeSelf) rend.material.color = Color.red;
+//		else rend.material.color = null;
 
 		//initialise the orientation and location of laser just emitted out of the emitter.
 		laserRay1.origin = transform.position;
