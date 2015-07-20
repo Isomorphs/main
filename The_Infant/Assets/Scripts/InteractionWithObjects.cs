@@ -25,6 +25,7 @@ public class InteractionWithObjects : MonoBehaviour {
 	float lastVelocity;
 
 	GameObject lastObjectHit = null;
+	KeyCode pressedKey;
 
 	void Start(){
 		cam = Camera.main.GetComponent<Camera>();
@@ -34,25 +35,18 @@ public class InteractionWithObjects : MonoBehaviour {
 	}
 
 	void Update(){
+		//set a new cam ray in each frame
 		camray = cam.ScreenPointToRay(centre);
-
 
 		//if carrying anything, there is no need to do raycast.
 		if (carrying || !Physics.Raycast(camray, out hit, interactionDistance, mask)){
 			hit = new RaycastHit(); //reset the hit info if not hitting anything.
 		}
 		Debug.DrawLine(camray.origin, hit.point, Color.red, Time.deltaTime * 60);
-		if (hit.transform != null){
-			if (hit.transform.CompareTag("Interact")){
-				print (hit.transform.gameObject.ToString());
-				hit.transform.SendMessage("OnHitByCamRay");
-			}
-			lastObjectHit = hit.transform.gameObject;
-		} else if (lastObjectHit != null){
-				if (lastObjectHit.CompareTag("Interact")) lastObjectHit.SendMessage("OnCamRayExit");
-				lastObjectHit = null;
-		}
+
+		//pick up or throw an object
 		if (Input.GetKeyDown(KeyCode.E)){
+			pressedKey = KeyCode.E;
 			if (carrying){
 				Drop();
 				item = null;
@@ -61,10 +55,39 @@ public class InteractionWithObjects : MonoBehaviour {
 			}
 		}
 		if (carrying && Input.GetKeyDown(KeyCode.Q)){
+			pressedKey = KeyCode.Q;
 			Drop();
 			Throw();
 			item = null;
 		}
+
+		//Send messages accordingly
+		if (hit.transform != null){
+			if (lastObjectHit == null) {
+				//the first object is hit.
+				if (hit.transform.CompareTag("Interact")){
+					hit.transform.SendMessage("OnHitByCamRay", pressedKey);
+				}
+				lastObjectHit = hit.transform.gameObject;
+			} else if (lastObjectHit != hit.transform.gameObject){
+				//a different object is hut
+				print("new object hit");
+				if (hit.transform.CompareTag("Interact")) hit.transform.SendMessage("OnHitByCamRay", pressedKey);
+				if (lastObjectHit.CompareTag("Interact")) lastObjectHit.SendMessage("OnCamRayExit", pressedKey);
+				lastObjectHit = hit.transform.gameObject;
+			} else if (lastObjectHit == hit.transform.gameObject){
+				//the same object is being hit.
+				if (hit.transform.CompareTag("Interact")){
+					lastObjectHit.SendMessage("OnCamRayStay", pressedKey);
+				}
+			}
+		} else if (lastObjectHit != null){
+			//stop hitting an object.
+			if (lastObjectHit.transform.CompareTag("Interact")) lastObjectHit.SendMessage("OnCamRayExit", pressedKey);
+			lastObjectHit = null;
+		}
+
+		pressedKey = KeyCode.None;
 	}
 
 	void FixedUpdate(){
@@ -130,9 +153,7 @@ public class InteractionWithObjects : MonoBehaviour {
 
 		//in case we hit the environment
 		if (carrying && col != null && col.rigidbody != null){
-			//if (col.rigidbody.mass > 50f) movement.isForbidden = true;
-
-			//compute acceleration of the rigidbody we have hit
+			//compute acceleration of the rigidbody we have hit. If it exceeds an arbitrary value, prohibit this movement by the player
 			if (col.rigidbody.mass * (col.rigidbody.velocity.magnitude - lastVelocity) / Time.fixedDeltaTime > 50f){
 				movement.isForbidden = true;
 				print ("colliding");
