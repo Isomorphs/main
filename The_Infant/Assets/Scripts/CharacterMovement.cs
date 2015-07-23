@@ -15,6 +15,8 @@ public class CharacterMovement : MonoBehaviour
 	private Rigidbody playerRB;
 	private float rotV = 0f;
 	private bool grounded = true;
+//	private float strength = 15f;
+//	private float lastVelocity = 0f;
 
 	Quaternion previousRot;
 //	Vector3 previousPos;
@@ -29,6 +31,11 @@ public class CharacterMovement : MonoBehaviour
 	void Update () {
 		if (Input.GetButtonDown ("Jump") && grounded == true)
 			Jump ();
+
+//		if ((playerRB.velocity.magnitude - lastVelocity) / Time.deltaTime * playerRB.mass > strength){
+//			isForbidden = true;
+//		}
+//		lastVelocity = playerRB.velocity.magnitude;
 	}
 	
 	void FixedUpdate ()
