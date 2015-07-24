@@ -10,10 +10,11 @@ public class InteractionWithObjects : MonoBehaviour {
 	public float interactionDistance = 10f;
 	public LayerMask mask; //label this as "Default" in the editor mode
 
-	public float speedLimit = 20f;
-	public float angularSpeedLimit = 30f;
-	public float resetRange = 0.1f;
-	float dropOffRange;
+	//these limits are used to improve the movement of pick up object
+	float speedLimit = 20f;
+	float angularSpeedLimit = 30f;
+	float resetRange = 0.1f;
+	float dropOffRange; // if the object is further away from player's hand by this distance, the object will be dropped off automatically
 
 	RaycastHit hit;
 	Ray camray;
@@ -39,7 +40,8 @@ public class InteractionWithObjects : MonoBehaviour {
 		cam = Camera.main.GetComponent<Camera>();
 		centre = new Vector3(cam.pixelWidth / 2f, cam.pixelHeight / 2f, 0);
 		initMass = GetComponent<Rigidbody>().mass;
-//		movement = GameObject.FindWithTag("Player").GetComponent<CharacterMovement>();
+
+		//six anchors to stabilise the object picked up. Can add more or remove some.
 		anchors = new Vector3[6];
 		anchors[0] = Vector3.up;
 		anchors[1] = -Vector3.up;
@@ -47,6 +49,8 @@ public class InteractionWithObjects : MonoBehaviour {
 		anchors[3] = -Vector3.left;
 		anchors[4] = Vector3.forward;
 		anchors[5] = -Vector3.forward;
+
+		//automatically set this for convenience. Can be commented out if need to customise this range
 		dropOffRange = armLength * 2f + cam.transform.localPosition.magnitude;
 	}
 
@@ -121,7 +125,6 @@ public class InteractionWithObjects : MonoBehaviour {
 				itemRB.MoveRotation(Quaternion.Slerp(rot, handRot, Time.fixedDeltaTime * smoothing));
 			} else {
 				itemRB.MoveRotation(handRot);
-//				print("rotation reset");
 			}
 		}
 	}
@@ -141,12 +144,10 @@ public class InteractionWithObjects : MonoBehaviour {
 		itemMass = itemRB.mass;
 		this.GetComponent <Rigidbody> ().mass = initMass + itemMass;
 
-//		itemRB.drag = 1f;
-//		itemRB.angularDrag = 1f;
-
 		itemRB.mass = strength / 2000f;  //Do not change this number unless you know what you are doing. I optimised this!
 		itemRB.useGravity = false;
 
+		//in case some rigidbody's CoM are manually changed.
 		initCoM = itemRB.centerOfMass;
 		itemRB.centerOfMass = Vector3.zero;
 
@@ -195,7 +196,8 @@ public class InteractionWithObjects : MonoBehaviour {
 //		}
 		///////////////////////////////////////////
 
-		hand = cam.transform.position + cam.transform.forward * armLength;
+		hand = Vector3.Lerp(hand, cam.transform.position + cam.transform.forward * armLength,
+		                    Time.fixedDeltaTime * smoothing);
 
 		BringObjToPosition();
 
@@ -206,8 +208,11 @@ public class InteractionWithObjects : MonoBehaviour {
 		handRot = cam.transform.rotation;
 		foreach (Vector3 point in anchors){
 			Vector3 dist = (hand + handRot * point) - (item.transform.position + rot * point);
+
+			//debug.
 //			Debug.DrawLine((item.transform.position + rot * point), (hand + handRot * point), Color.cyan);
-			print(dist.ToString());
+//			print(dist.ToString());
+
 			//drop the object if the object is dragged by somthing
 			if (dist.magnitude > dropOffRange){
 				if (Physics.Raycast(item.transform.position, dist, dist.magnitude / 5f)){
