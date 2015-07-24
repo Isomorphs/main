@@ -18,6 +18,8 @@ public class CharacterMovement : MonoBehaviour
 //	private float strength = 15f;
 //	private float lastVelocity = 0f;
 
+	float initialMass;
+
 	Quaternion previousRot;
 //	Vector3 previousPos;
 
@@ -25,6 +27,7 @@ public class CharacterMovement : MonoBehaviour
 	void Awake ()
 	{
 		playerRB = GetComponent<Rigidbody> ();
+		initialMass = playerRB.mass;
 	
 	}
 
@@ -67,7 +70,7 @@ public class CharacterMovement : MonoBehaviour
 		transform.Rotate (0, rotH, 0);
 
 		movement.Set (h, 0f, v);
-		movement = transform.rotation * movement.normalized * speed * Time.deltaTime;
+		movement = transform.rotation * movement.normalized * (speed * initialMass / playerRB.mass) * Time.deltaTime;
 
 		playerRB.MovePosition (transform.position + movement);
 	}

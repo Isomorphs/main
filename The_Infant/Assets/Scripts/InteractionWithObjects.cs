@@ -10,8 +10,8 @@ public class InteractionWithObjects : MonoBehaviour {
 	public float interactionDistance = 10f;
 	public LayerMask mask; //label this as "Default" in the editor mode
 
-	public float speedLimit = 1f;
-	public float angularSpeedLimit = 0.3f;
+	public float speedLimit = 20f;
+	public float angularSpeedLimit = 30f;
 	public float resetRange = 0.1f;
 	float dropOffRange;
 
@@ -30,6 +30,7 @@ public class InteractionWithObjects : MonoBehaviour {
 
 	Vector3[] anchors;
 	Vector3 hand;
+	Vector3 initCoM;
 
 	GameObject lastObjectHit = null;
 	KeyCode pressedKey;
@@ -57,7 +58,7 @@ public class InteractionWithObjects : MonoBehaviour {
 		if (carrying || !Physics.Raycast(camray, out hit, interactionDistance, mask)){
 			hit = new RaycastHit(); //reset the hit info if not hitting anything.
 		}
-//		Debug.DrawLine(camray.origin, hit.point, Color.red, Time.deltaTime * 60);
+		Debug.DrawLine(camray.origin, hit.point, Color.red, Time.deltaTime * 60);
 
 		//pick up or throw an object
 		if (Input.GetKeyDown(KeyCode.E)){
@@ -116,8 +117,11 @@ public class InteractionWithObjects : MonoBehaviour {
 			if (Vector3.Distance(item.transform.position, hand) < resetRange){
 				itemRB.MovePosition(hand);
 			}
-			if (Quaternion.Angle(rot, handRot) < 5f){
+			if (Quaternion.Angle(rot, handRot) > 5f){
 				itemRB.MoveRotation(Quaternion.Slerp(rot, handRot, Time.fixedDeltaTime * smoothing));
+			} else {
+				itemRB.MoveRotation(handRot);
+//				print("rotation reset");
 			}
 		}
 	}
@@ -140,8 +144,11 @@ public class InteractionWithObjects : MonoBehaviour {
 //		itemRB.drag = 1f;
 //		itemRB.angularDrag = 1f;
 
-		itemRB.mass = strength / 750f;  //Do not change this number unless you know what you are doing. I optimised this!
+		itemRB.mass = strength / 2000f;  //Do not change this number unless you know what you are doing. I optimised this!
 		itemRB.useGravity = false;
+
+		initCoM = itemRB.centerOfMass;
+		itemRB.centerOfMass = Vector3.zero;
 
 		//original solution----------------
 //		//Set's initial rotation to be same as player
@@ -199,13 +206,18 @@ public class InteractionWithObjects : MonoBehaviour {
 		handRot = cam.transform.rotation;
 		foreach (Vector3 point in anchors){
 			Vector3 dist = (hand + handRot * point) - (item.transform.position + rot * point);
-			Debug.DrawLine((item.transform.position + rot * point), (hand + handRot * point), Color.red);
+//			Debug.DrawLine((item.transform.position + rot * point), (hand + handRot * point), Color.cyan);
+			print(dist.ToString());
 			//drop the object if the object is dragged by somthing
-			if (dist.magnitude > dropOffRange / 4f){
-				if (dist.magnitude > dropOffRange || Physics.Raycast(item.transform.position, dist, dist.magnitude / 5f)){
+			if (dist.magnitude > dropOffRange){
+				if (Physics.Raycast(item.transform.position, dist, dist.magnitude / 5f)){
 					Drop ();
 					return;
+				} else {
+					itemRB.velocity = Vector3.zero;
 				}
+			} else if (dist.magnitude < 0.2f){
+				continue;
 			}
 			itemRB.AddForceAtPosition(dist * (strength / 6f), item.transform.position + rot * point);
 		}
@@ -223,8 +235,9 @@ public class InteractionWithObjects : MonoBehaviour {
 //		item.GetComponent <Rigidbody> ().mass = itemMass;
 //		this.GetComponent<Rigidbody> ().mass = initMass;
 		/// //////////////////////////////////////////
-		item.GetComponent <Rigidbody> ().mass = itemMass;
+		itemRB.mass = itemMass;
 		this.GetComponent<Rigidbody> ().mass = initMass;
+		itemRB.centerOfMass = initCoM;
 		itemRB.useGravity = true;
 	}
 	void Throw () {
