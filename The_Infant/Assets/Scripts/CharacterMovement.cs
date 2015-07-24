@@ -52,6 +52,9 @@ public class CharacterMovement : MonoBehaviour
 		}
 		previousRot = playerRB.transform.rotation;
 //		previousPos = playerRB.transform.position;
+
+		if (Input.GetButtonDown ("Jump") && grounded == true)
+			Jump ();
 	}
 
 	void Move (float h, float v)
@@ -72,21 +75,18 @@ public class CharacterMovement : MonoBehaviour
 		playerRB.MovePosition (transform.position + movement);
 	}
 
-	void OnCollisionStay (Collision collision)
+	void OnTriggerEnter (Collider other)
 	{
-		if (collision.gameObject.tag == "Environment") {
+
 			grounded = true;
-			//Destroy(collision.gameObject);
-		}
+
 
 	}
 
-	void OnCollisionExit (Collision collision)
+	void OnTriggerExit (Collider other)
 	{
-		if (collision.gameObject.tag == "Environment") {
 			grounded = false;
-			//Destroy(collision.gameObject);
-		}
+
 		
 	}
 
