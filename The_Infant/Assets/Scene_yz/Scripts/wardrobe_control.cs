@@ -33,12 +33,18 @@ public class wardrobe_control : MonoBehaviour {
 				print("open!");
 				motor.targetVelocity = -30f;
 				door.GetComponent<HingeJoint>().motor = motor;
+				foreach (Collider collider in GetComponents<BoxCollider>()){
+					if (collider.isTrigger == true) collider.enabled = false;
+				}
 				isOpened = true;
 				canvas.GetComponentInChildren<UpdateText>().content = "Press E to close it";
 			} else {
 				print("close!");
 				motor.targetVelocity = 30f;
 				door.GetComponent<HingeJoint>().motor = motor;
+				foreach (Collider collider in GetComponents<BoxCollider>()){
+					if (collider.isTrigger == true) collider.enabled = true;
+				}
 				isOpened = false;
 				canvas.GetComponentInChildren<UpdateText>().content = "Press E to open it";
 			}

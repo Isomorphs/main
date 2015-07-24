@@ -48,7 +48,7 @@ public class laser_action : MonoBehaviour {
 	public void TriggeredByLaser () {
 		//print("triggered");
 		triggered = true;
-		transform.RotateAround(transform.position, Vector3.forward, speed);
+		transform.RotateAround(transform.position, transform.TransformDirection(Vector3.forward), speed);
 //		lift_control.UpdateLevelLimits();
 //		rendering.material.color = PulsingColor;
 //		timeElapsed += Time.deltaTime;

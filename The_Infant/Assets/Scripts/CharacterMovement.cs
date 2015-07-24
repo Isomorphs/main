@@ -15,6 +15,10 @@ public class CharacterMovement : MonoBehaviour
 	private Rigidbody playerRB;
 	private float rotV = 0f;
 	private bool grounded = true;
+//	private float strength = 15f;
+//	private float lastVelocity = 0f;
+
+	float initialMass;
 
 	Quaternion previousRot;
 //	Vector3 previousPos;
@@ -23,12 +27,18 @@ public class CharacterMovement : MonoBehaviour
 	void Awake ()
 	{
 		playerRB = GetComponent<Rigidbody> ();
+		initialMass = playerRB.mass;
 	
 	}
 
 	void Update () {
 		if (Input.GetButtonDown ("Jump") && grounded == true)
 			Jump ();
+
+//		if ((playerRB.velocity.magnitude - lastVelocity) / Time.deltaTime * playerRB.mass > strength){
+//			isForbidden = true;
+//		}
+//		lastVelocity = playerRB.velocity.magnitude;
 	}
 	
 	void FixedUpdate ()
@@ -45,6 +55,9 @@ public class CharacterMovement : MonoBehaviour
 		}
 		previousRot = playerRB.transform.rotation;
 //		previousPos = playerRB.transform.position;
+
+		if (Input.GetButtonDown ("Jump") && grounded == true)
+			Jump ();
 	}
 
 	void Move (float h, float v)
@@ -60,26 +73,23 @@ public class CharacterMovement : MonoBehaviour
 		transform.Rotate (0, rotH, 0);
 
 		movement.Set (h, 0f, v);
-		movement = transform.rotation * movement.normalized * speed * Time.deltaTime;
+		movement = transform.rotation * movement.normalized * (speed * initialMass / playerRB.mass) * Time.deltaTime;
 
 		playerRB.MovePosition (transform.position + movement);
 	}
 
-	void OnCollisionStay (Collision collision)
+	void OnTriggerEnter (Collider other)
 	{
-		if (collision.gameObject.tag == "Environment") {
+
 			grounded = true;
-			//Destroy(collision.gameObject);
-		}
+
 
 	}
 
-	void OnCollisionExit (Collision collision)
+	void OnTriggerExit (Collider other)
 	{
-		if (collision.gameObject.tag == "Environment") {
 			grounded = false;
-			//Destroy(collision.gameObject);
-		}
+
 		
 	}
 
