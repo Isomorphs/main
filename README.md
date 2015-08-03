@@ -2,20 +2,13 @@
 
 ## NEXT LOOP
 
-1. Opening screen
-- Start new game tab
-- load game take
-- Manual tab
-- Credits tab
-
-2. In-game pausing with esc
-- pause game
-- save game
-- exit game
-
-3. Implement aesthetic style across all scenes
-
-4. Story outline
+1. Mirror control
+2. Floor, wall, panel, and others: Texture and model
+3. lift control panel
+4. sound effects
+5. Indoor lighting
+6. pick up bug
+7. jump bug
 
 
 
@@ -87,5 +80,24 @@ _________________________________________
 - pick up/place mirror actions
 
 3. try out one aesthetic style 
+4. 
+
+------------------------------------------------
+1. Opening screen
+- Start new game tab
+- load game take
+- Manual tab
+- Credits tab
+
+2. In-game pausing with esc
+- pause game
+- save game
+- exit game
+
+3. Implement aesthetic style across all scenes
+
+4. Story outline
+
+
 
 
