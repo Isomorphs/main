@@ -11,10 +11,10 @@ public class InteractionWithObjects : MonoBehaviour {
 	public LayerMask mask; //label this as "Default" in the editor mode
 
 	//these limits are used to improve the movement of pick up object
-	float speedLimit = 20f;
-	float angularSpeedLimit = 30f;
-	float resetRange = 0.1f;
-	float dropOffRange; // if the object is further away from player's hand by this distance, the object will be dropped off automatically
+//	float speedLimit = 10f;
+//	float angularSpeedLimit = 30f;
+//	float resetRange = 0.5f;
+//	float dropOffRange; // if the object is further away from player's hand by this distance, the object will be dropped off automatically
 
 	RaycastHit hit;
 	Ray camray;
@@ -26,10 +26,12 @@ public class InteractionWithObjects : MonoBehaviour {
 	Vector3 centre;
 	Transform initTrans;
 	float initMass;
-	float smoothing = 10f;
+	float smoothing = 50f;
 	Quaternion rot, handRot;
 
-	Vector3[] anchors;
+	float air_resistance;
+
+//	Vector3[] anchors;
 	Vector3 hand;
 	Vector3 initCoM;
 
@@ -40,18 +42,20 @@ public class InteractionWithObjects : MonoBehaviour {
 		cam = Camera.main.GetComponent<Camera>();
 		centre = new Vector3(cam.pixelWidth / 2f, cam.pixelHeight / 2f, 0);
 		initMass = GetComponent<Rigidbody>().mass;
-
-		//six anchors to stabilise the object picked up. Can add more or remove some.
-		anchors = new Vector3[6];
-		anchors[0] = Vector3.up;
-		anchors[1] = -Vector3.up;
-		anchors[2] = Vector3.left;
-		anchors[3] = -Vector3.left;
-		anchors[4] = Vector3.forward;
-		anchors[5] = -Vector3.forward;
+//
+//		//six anchors to stabilise the object picked up. Can add more or remove some.
+//		anchors = new Vector3[1];
+//		anchors.Initialize();
+//		anchors[0] = Vector3.zero;
+////		anchors[0] = Vector3.up;
+////		anchors[1] = -Vector3.up;
+////		anchors[2] = Vector3.left;
+////		anchors[3] = -Vector3.left;
+////		anchors[4] = Vector3.forward;
+////		anchors[5] = -Vector3.forward;
 
 		//automatically set this for convenience. Can be commented out if need to customise this range
-		dropOffRange = armLength * 2f + cam.transform.localPosition.magnitude;
+		//dropOffRange = armLength * 2f + cam.transform.localPosition.magnitude;
 	}
 
 	void Update(){
@@ -116,12 +120,12 @@ public class InteractionWithObjects : MonoBehaviour {
 //			print ("carrying");
 
 			//reset and smoothing out movement
-			if (itemRB.velocity.magnitude > speedLimit) itemRB.velocity = Vector3.zero;
-			if (itemRB.angularVelocity.magnitude > angularSpeedLimit) itemRB.angularVelocity = Vector3.zero;
-			if (Vector3.Distance(item.transform.position, hand) < resetRange){
-				itemRB.MovePosition(hand);
-			}
-			if (Quaternion.Angle(rot, handRot) > 5f){
+//			if (itemRB.velocity.magnitude > speedLimit) itemRB.velocity = Vector3.zero;
+//			if (itemRB.angularVelocity.magnitude > angularSpeedLimit) itemRB.angularVelocity = Vector3.zero;
+//			if (Vector3.Distance(item.transform.position, hand) < resetRange){
+//				itemRB.MovePosition(hand);
+//			}
+			if (Quaternion.Angle(rot, handRot) > 3f){
 				itemRB.MoveRotation(Quaternion.Slerp(rot, handRot, Time.fixedDeltaTime * smoothing));
 			} else {
 				itemRB.MoveRotation(handRot);
@@ -144,12 +148,22 @@ public class InteractionWithObjects : MonoBehaviour {
 		itemMass = itemRB.mass;
 		this.GetComponent <Rigidbody> ().mass = initMass + itemMass;
 
-		itemRB.mass = strength / 2000f;  //Do not change this number unless you know what you are doing. I optimised this!
+		itemRB.mass = 0.1f;  //Do not change this number!
 		itemRB.useGravity = false;
+
+		itemRB.drag = 0f;
 
 		//in case some rigidbody's CoM are manually changed.
 		initCoM = itemRB.centerOfMass;
 		itemRB.centerOfMass = Vector3.zero;
+
+		//critical damping
+		air_resistance = Mathf.Sqrt(itemRB.mass * strength) * 2f;
+		air_resistance *= 6f;
+
+		//initialise position
+//		updateHandPosition();
+//		itemRB.MovePosition(hand);
 
 		//original solution----------------
 //		//Set's initial rotation to be same as player
@@ -177,6 +191,11 @@ public class InteractionWithObjects : MonoBehaviour {
 		/// //////////////////////////////
 	}
 
+	void updateHandPosition(){
+		hand = Vector3.Lerp(hand, cam.transform.position + cam.transform.forward * armLength,
+		                    Time.fixedDeltaTime * smoothing);
+	}
+
 	void carry(){
 		//original solution -------------------------
 //		//Change position of the carried item accordingly
@@ -196,8 +215,7 @@ public class InteractionWithObjects : MonoBehaviour {
 //		}
 		///////////////////////////////////////////
 
-		hand = Vector3.Lerp(hand, cam.transform.position + cam.transform.forward * armLength,
-		                    Time.fixedDeltaTime * smoothing);
+		updateHandPosition();
 
 		BringObjToPosition();
 
@@ -206,26 +224,28 @@ public class InteractionWithObjects : MonoBehaviour {
 	void BringObjToPosition(){
 		rot = item.transform.rotation;
 		handRot = cam.transform.rotation;
-		foreach (Vector3 point in anchors){
-			Vector3 dist = (hand + handRot * point) - (item.transform.position + rot * point);
 
-			//debug.
-//			Debug.DrawLine((item.transform.position + rot * point), (hand + handRot * point), Color.cyan);
-//			print(dist.ToString());
+		Vector3 dist = hand - item.transform.position;
 
-			//drop the object if the object is dragged by somthing
-			if (dist.magnitude > dropOffRange){
-				if (Physics.Raycast(item.transform.position, dist, dist.magnitude / 5f)){
-					Drop ();
-					return;
-				} else {
-					itemRB.velocity = Vector3.zero;
-				}
-			} else if (dist.magnitude < 0.2f){
-				continue;
-			}
-			itemRB.AddForceAtPosition(dist * (strength / 6f), item.transform.position + rot * point);
-		}
+		itemRB.AddForce(dist * strength);
+		itemRB.velocity -= itemRB.velocity * air_resistance * Time.fixedDeltaTime;
+
+//		foreach (Vector3 point in anchors){
+//			Vector3 dist = (hand + handRot * point) - (item.transform.position + rot * point);
+//
+//			//drop the object if the object is dragged by somthing
+////			if (dist.magnitude > dropOffRange){
+////				if (Physics.Raycast(item.transform.position, dist, dist.magnitude / 5f)){
+////					Drop ();
+////					return;
+////				}
+////			} else if (dist.magnitude < resetRange){
+////				continue;
+////			}
+//			itemRB.AddForceAtPosition(dist * (strength), item.transform.position + rot * point);
+//			//critical damping
+//			itemRB.velocity -= itemRB.velocity * air_resistance * Time.fixedDeltaTime;
+//			print("anchor number:" + anchors.Length);
 	}
 
 	void Drop(){

@@ -7,7 +7,6 @@ public class Level_2_Laser_action_Bridge : MonoBehaviour {
 	public float speed = 1f;
 	public GameObject bridge;
 	Renderer rend;
-	Color initColor;
 	Rigidbody rb;
 	bool forceAdded = false;
 	float chargingTime = 3f;
@@ -16,7 +15,6 @@ public class Level_2_Laser_action_Bridge : MonoBehaviour {
 
 	void Start(){
 		rend = GetComponent<Renderer>();
-		initColor = rend.material.color;
 		rb = bridge.GetComponent<Rigidbody>();
 	}
 

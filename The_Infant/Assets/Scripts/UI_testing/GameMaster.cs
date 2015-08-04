@@ -14,12 +14,17 @@ public class GameMaster : MonoBehaviour {
 	public int currentLevel;
 	public int numberOfPuzzleUnlocked;
 	public Canvas inGameMenu;
+	public Canvas inGameHint;
 
+	GameObject player;
 
 	bool isPaused;
 	
 	void Start () {
-		
+		player = GameObject.FindGameObjectWithTag("Player");
+
+		//initalise mouse sensitivity (and other properties)
+		applySettings();
 	}
 
 	void Update () {
@@ -42,6 +47,7 @@ public class GameMaster : MonoBehaviour {
 		if (isPaused == false) {
 			//activate in-game menu and pause the game.
 			inGameMenu.gameObject.SetActive(true);
+			inGameHint.gameObject.SetActive(false);
 
 			Time.timeScale = 0f;
 
@@ -54,11 +60,20 @@ public class GameMaster : MonoBehaviour {
 		}
 		else {
 			inGameMenu.gameObject.SetActive(false);
+			inGameHint.gameObject.SetActive(true);
+
+			applySettings();
 
 			Time.timeScale = 1.0f;
 			
 			isPaused = false;
 			print ("unpaused");
 		}
+	}
+
+	//settings to apply when user exits the in-game menu
+	void applySettings(){
+		//rmb to scale down the value by 10 times
+		player.GetComponent<CharacterMovement>().MouseSensitivity = mouseSensitivity / 10f;
 	}
 }

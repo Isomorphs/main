@@ -5,12 +5,13 @@ public class CharacterMovement : MonoBehaviour
 {
 	// For jumping to work normally, all "jumpable" objects need to be tagged as "Environment"
 
-	public float speed = 2.0f;
-	public float jumpSpeed = 10f;
-	public float mouseSensitivity = 60f;
-	public float verticalRange = 80f;
+	public float speed = 20f;
+	public float jumpSpeed = 4000f;
+	public float verticalRange = 60f;
 	public bool isForbidden = false;
 
+
+	float mouseSensitivity;
 	private Vector3 movement;
 	private Rigidbody playerRB;
 	private float rotV = 0f;
@@ -22,6 +23,15 @@ public class CharacterMovement : MonoBehaviour
 
 	Quaternion previousRot;
 //	Vector3 previousPos;
+
+	public float MouseSensitivity {
+		get {
+			return mouseSensitivity;
+		}
+		set {
+			mouseSensitivity = value;
+		}
+	}
 
 	// Use this for initialization
 	void Awake ()

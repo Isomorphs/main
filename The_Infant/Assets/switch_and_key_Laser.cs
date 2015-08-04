@@ -7,7 +7,7 @@ public class switch_and_key_Laser : MonoBehaviour {
 	public GameObject key;
 	public GameObject Laser_emitter;
 	TextMesh textmesh;
-	bool unlocked = false;
+//	bool unlocked = false;
 
 	void Start(){
 		textmesh = GetComponentInChildren<TextMesh>();
@@ -26,7 +26,7 @@ public class switch_and_key_Laser : MonoBehaviour {
 	}
 
 	void unlock(){
-		unlocked = true;
+//		unlocked = true;
 		Laser_emitter.SetActive(true);
 		textmesh.text = "Good Job!";
 		Destroy(key.GetComponent<Rigidbody>());
