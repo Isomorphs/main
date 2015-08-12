@@ -4,7 +4,7 @@ using System.Collections;
 public class InteractionWithObjects : MonoBehaviour {
 	public float armLength = 5f;
 	public float strength = 15f;
-	public float throwingStrength = 50f;
+	public float throwingStrength = 5000f;
 	public bool AddRandomTorque = true;
 	public float turning = 5f;
 	public float interactionDistance = 10f;
@@ -14,7 +14,7 @@ public class InteractionWithObjects : MonoBehaviour {
 //	float speedLimit = 10f;
 //	float angularSpeedLimit = 30f;
 //	float resetRange = 0.5f;
-//	float dropOffRange; // if the object is further away from player's hand by this distance, the object will be dropped off automatically
+	float dropOffRange = 8f; // if the object is further away from player's hand by this distance, the object will be dropped off automatically
 
 	RaycastHit hit;
 	Ray camray;
@@ -55,7 +55,7 @@ public class InteractionWithObjects : MonoBehaviour {
 ////		anchors[5] = -Vector3.forward;
 
 		//automatically set this for convenience. Can be commented out if need to customise this range
-		//dropOffRange = armLength * 2f + cam.transform.localPosition.magnitude;
+		dropOffRange = armLength * 2f + cam.transform.localPosition.magnitude * 2f;
 	}
 
 	void Update(){
@@ -148,7 +148,7 @@ public class InteractionWithObjects : MonoBehaviour {
 		itemMass = itemRB.mass;
 		this.GetComponent <Rigidbody> ().mass = initMass + itemMass;
 
-		itemRB.mass = 0.1f;  //Do not change this number!
+		itemRB.mass = 0.05f;  //Do not change this number!
 		itemRB.useGravity = false;
 
 		itemRB.drag = 0f;
@@ -159,7 +159,7 @@ public class InteractionWithObjects : MonoBehaviour {
 
 		//critical damping
 		air_resistance = Mathf.Sqrt(itemRB.mass * strength) * 2f;
-		air_resistance *= 6f;
+		air_resistance *= 12f;
 
 		//initialise position
 //		updateHandPosition();
@@ -226,6 +226,11 @@ public class InteractionWithObjects : MonoBehaviour {
 		handRot = cam.transform.rotation;
 
 		Vector3 dist = hand - item.transform.position;
+
+		if (dist.magnitude > dropOffRange){
+			Drop ();
+			return;
+		}
 
 		itemRB.AddForce(dist * strength);
 		itemRB.velocity -= itemRB.velocity * air_resistance * Time.fixedDeltaTime;
